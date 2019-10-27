@@ -1,23 +1,46 @@
 package com.example.drivingstyleassistant;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
+import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 public class SensorPreviewFragment extends Fragment implements SensorEventListener {
 
     SensorManager sensorManager;
     Sensor accelerationSensor;
     Sensor gyroSensor;
+    float currentSpeed;
+    double currentLatitude;
+    double currentLongitude;
+    float accelerometerX;
+    float accelerometerY;
+    float accelerometerZ;
+
+    TextView locSpeed;
+    TextView locLongitude;
+    TextView locLatitude;
+    TextView accX;
+    TextView accY;
+    TextView accZ;
 
     private OnFragmentInteractionListener mListener;
 
@@ -38,17 +61,90 @@ public class SensorPreviewFragment extends Fragment implements SensorEventListen
         return inflater.inflate(R.layout.fragment_sensor_preview, container, false);
     }
 
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         final LocationManager locationManager = (LocationManager) getActivity().getSystemService(getActivity().getApplicationContext().LOCATION_SERVICE);
         final String locationProvider = LocationManager.GPS_PROVIDER;
 
-        if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) && !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.gps_check_message), Toast.LENGTH_SHORT).show();
         }
 
         //accelerometer
-        sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+            } else {
+                //Request the permission
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        1);
+
+            }
+        } else {
+
+            final LocationListener locationListener = new LocationListener() {
+                public void onLocationChanged(Location location) {
+                    // Called when a new location is found by the network location provider.
+                    currentSpeed = location.getSpeed();
+                    currentLatitude = location.getLatitude();
+                    currentLongitude = location.getLongitude();
+
+                    locSpeed = (TextView) getActivity().findViewById(R.id.locationSpeedValue);
+                    locLatitude = (TextView) getActivity().findViewById(R.id.locationLatitudeValue);
+                    locLongitude = (TextView) getActivity().findViewById(R.id.locationLongitudeValue);
+
+                    locSpeed.setText(String.valueOf(currentSpeed));
+                    locLatitude.setText(String.valueOf(currentLatitude));
+                    locLongitude.setText(String.valueOf(currentLongitude));
+
+                }
+
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+                    /*if(status == LocationProvider.TEMPORARILY_UNAVAILABLE)
+                    {
+                        locationManager.removeUpdates(this);
+                    }
+                    else {
+                        locationManager.requestLocationUpdates(locationProvider, 0, 0, this);
+                    } //removing updates when gps signal is poor in order to prevent from false speed*/
+                }
+
+                public void onProviderEnabled(String provider) {
+                }
+
+                public void onProviderDisabled(String provider) {
+                }
+            };
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
+        }
+    }
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        Sensor sensor = event.sensor;
+
+        accelerometerX = event.values[0];
+        accelerometerY = event.values[1];
+        accelerometerZ = event.values[2];
+
+        accX = getActivity().findViewById(R.id.accelerometerXValue);
+        accY = getActivity().findViewById(R.id.accelerometerYValue);
+        accZ = getActivity().findViewById(R.id.accelerometerZValue);
+
+        accX.setText(String.valueOf(accelerometerX));
+        accY.setText(String.valueOf(accelerometerY));
+        accZ.setText(String.valueOf(accelerometerZ));
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
     public interface OnFragmentInteractionListener {
