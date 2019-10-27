@@ -63,12 +63,23 @@ public class SensorPreviewFragment extends Fragment implements SensorEventListen
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        locSpeed = (TextView) getActivity().findViewById(R.id.locationSpeedValue);
+        locLatitude = (TextView) getActivity().findViewById(R.id.locationLatitudeValue);
+        locLongitude = (TextView) getActivity().findViewById(R.id.locationLongitudeValue);
+
+        accX = getActivity().findViewById(R.id.accelerometerXValue);
+        accY = getActivity().findViewById(R.id.accelerometerYValue);
+        accZ = getActivity().findViewById(R.id.accelerometerZValue);
+
         final LocationManager locationManager = (LocationManager) getActivity().getSystemService(getActivity().getApplicationContext().LOCATION_SERVICE);
         final String locationProvider = LocationManager.GPS_PROVIDER;
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.gps_check_message), Toast.LENGTH_SHORT).show();
         }
+
+        locSpeed.setText("0");
 
         //accelerometer
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -95,9 +106,7 @@ public class SensorPreviewFragment extends Fragment implements SensorEventListen
                     currentLatitude = location.getLatitude();
                     currentLongitude = location.getLongitude();
 
-                    locSpeed = (TextView) getActivity().findViewById(R.id.locationSpeedValue);
-                    locLatitude = (TextView) getActivity().findViewById(R.id.locationLatitudeValue);
-                    locLongitude = (TextView) getActivity().findViewById(R.id.locationLongitudeValue);
+
 
                     locSpeed.setText(String.valueOf(currentSpeed));
                     locLatitude.setText(String.valueOf(currentLatitude));
@@ -133,9 +142,7 @@ public class SensorPreviewFragment extends Fragment implements SensorEventListen
         accelerometerY = event.values[1];
         accelerometerZ = event.values[2];
 
-        accX = getActivity().findViewById(R.id.accelerometerXValue);
-        accY = getActivity().findViewById(R.id.accelerometerYValue);
-        accZ = getActivity().findViewById(R.id.accelerometerZValue);
+
 
         accX.setText(String.valueOf(accelerometerX));
         accY.setText(String.valueOf(accelerometerY));
