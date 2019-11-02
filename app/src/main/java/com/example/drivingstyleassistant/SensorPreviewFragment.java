@@ -21,8 +21,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 public class SensorPreviewFragment extends Fragment implements SensorEventListener {
 
     SensorManager sensorManager;
@@ -34,6 +32,7 @@ public class SensorPreviewFragment extends Fragment implements SensorEventListen
     float accelerometerX;
     float accelerometerY;
     float accelerometerZ;
+    float currentBearing;
 
     TextView locSpeed;
     TextView locLongitude;
@@ -41,6 +40,7 @@ public class SensorPreviewFragment extends Fragment implements SensorEventListen
     TextView accX;
     TextView accY;
     TextView accZ;
+    TextView locBearing;
 
     private OnFragmentInteractionListener mListener;
 
@@ -62,11 +62,24 @@ public class SensorPreviewFragment extends Fragment implements SensorEventListen
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sensorManager.registerListener(this, accelerationSensor,SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         locSpeed = (TextView) getActivity().findViewById(R.id.locationSpeedValue);
         locLatitude = (TextView) getActivity().findViewById(R.id.locationLatitudeValue);
         locLongitude = (TextView) getActivity().findViewById(R.id.locationLongitudeValue);
+        locBearing = (TextView) getActivity().findViewById(R.id.locationBearingValue);
 
         accX = getActivity().findViewById(R.id.accelerometerXValue);
         accY = getActivity().findViewById(R.id.accelerometerYValue);
@@ -105,12 +118,14 @@ public class SensorPreviewFragment extends Fragment implements SensorEventListen
                     currentSpeed = location.getSpeed();
                     currentLatitude = location.getLatitude();
                     currentLongitude = location.getLongitude();
+                    currentBearing = location.getBearing();
 
 
 
                     locSpeed.setText(String.valueOf(currentSpeed));
                     locLatitude.setText(String.valueOf(currentLatitude));
                     locLongitude.setText(String.valueOf(currentLongitude));
+                    locBearing.setText(String.valueOf(currentBearing));
 
                 }
 
