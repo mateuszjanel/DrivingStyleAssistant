@@ -142,4 +142,26 @@
         app:layout_constraintStart_toEndOf="@+id/locationLatitudeLabel"
         app:layout_constraintTop_toBottomOf="@+id/locationLongitudeValue" />
 
+    <TextView
+        android:id="@+id/locationBearingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Bearing"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationLatitudeLabel" />
+
+    <TextView
+        android:id="@+id/locationBearingValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/locationBearingLabel"
+        app:layout_constraintTop_toBottomOf="@+id/locationLatitudeValue" />
+
 </android.support.constraint.ConstraintLayout>
