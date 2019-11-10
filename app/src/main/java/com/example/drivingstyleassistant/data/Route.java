@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Route {
     @PrimaryKey (autoGenerate = true)
-    public int routeId;
+    public int id;
     @ColumnInfo(name = "route_date")
     public Date routeDate;
     @ColumnInfo(name = "mark")
