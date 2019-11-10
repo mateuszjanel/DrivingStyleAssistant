@@ -1,4 +1,4 @@
-package com.example.drivingstyleassistant;
+package com.example.drivingstyleassistant.view;
 
 import android.Manifest;
 import android.content.Context;
@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.drivingstyleassistant.R;
 
 public class SensorPreviewFragment extends Fragment implements SensorEventListener {
 
