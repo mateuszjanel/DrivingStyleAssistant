@@ -1,4 +1,4 @@
-package com.example.drivingstyleassistant.view;
+package com.example.drivingstyleassistant.presentation;
 
 //import android.app.Fragment;
 import android.os.Bundle;

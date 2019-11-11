@@ -1,4 +1,4 @@
-package com.example.drivingstyleassistant.view;
+package com.example.drivingstyleassistant.presentation;
 
 import android.Manifest;
 import android.content.Context;
