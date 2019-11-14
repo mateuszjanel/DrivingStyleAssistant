@@ -1,9 +1,9 @@
-package com.example.drivingstyleassistant.data;
+package com.example.drivingstyleassistant.domain;
 
 import android.content.Context;
 
-import com.example.drivingstyleassistant.data.dao.RouteDao;
-import com.example.drivingstyleassistant.data.entities.Route;
+import com.example.drivingstyleassistant.domain.dao.RouteDao;
+import com.example.drivingstyleassistant.domain.entities.Route;
 
 import androidx.room.Database;
 import androidx.room.Room;
@@ -20,7 +20,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getAppDatabase(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE_NAME)
-                    //.allowMainThreadQueries()
+                    .allowMainThreadQueries()
                     .build();
         }
         return INSTANCE;
