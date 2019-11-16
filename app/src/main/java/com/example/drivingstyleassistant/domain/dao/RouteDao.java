@@ -3,6 +3,7 @@ package com.example.drivingstyleassistant.domain.dao;
 import com.example.drivingstyleassistant.domain.entities.Route;
 
 import java.sql.Date;
+import java.util.List;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -19,4 +20,13 @@ public interface RouteDao {
 
     @Query("UPDATE routes SET route_date = :_routeDate, mark = :_mark, sudden_breakings = :_suddenBreakings, sudden_accelerations = :_suddenAccelerations, smoothness = :_smoothness, dangerous_cornering = :_dangerousCornering WHERE id = :_id")
     void updateRoute(int _id, Date _routeDate, float _mark, float _suddenBreakings, float _suddenAccelerations, float _smoothness, float _dangerousCornering);
+
+    @Query("SELECT * FROM routes")
+    List<Route> getRoutes();
+
+    @Query("SELECT * FROM routes WHERE id = :_id")
+    Route getRouteById(int _id);
+
+    @Query("SELECT * FROM routes WHERE route_date = :_date")
+    List<Route> getRoutesByDate(Date _date);
 }

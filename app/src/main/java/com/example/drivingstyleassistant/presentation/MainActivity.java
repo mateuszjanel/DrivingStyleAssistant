@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.example.drivingstyleassistant.R;
+import com.example.drivingstyleassistant.common.ContextService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+        ContextService contextService = ContextService.getContextService();
+        contextService.appContext = getApplicationContext();
         Fragment fragment = new SensorPreviewFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
