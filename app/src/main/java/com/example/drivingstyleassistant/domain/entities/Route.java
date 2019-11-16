@@ -1,4 +1,4 @@
-package com.example.drivingstyleassistant.data.entities;
+package com.example.drivingstyleassistant.domain.entities;
 
 import java.util.Date;
 

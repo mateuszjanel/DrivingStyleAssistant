@@ -1,6 +1,7 @@
 package com.example.drivingstyleassistant.presentation;
 
 //import android.app.Fragment;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -33,6 +34,16 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.view_content, fragment);
         fragmentTransaction.commit();
+    }
+
+    protected void onResume() {
+        super.onResume();
+    }
+    protected void onPause() {
+        super.onPause();
+    }
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
 }
