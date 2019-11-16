@@ -1,6 +1,6 @@
-package com.example.drivingstyleassistant.data.dao;
+package com.example.drivingstyleassistant.domain.dao;
 
-import com.example.drivingstyleassistant.data.entities.Route;
+import com.example.drivingstyleassistant.domain.entities.Route;
 
 import java.sql.Date;
 
