@@ -2,10 +2,7 @@ package com.example.drivingstyleassistant.domain.entities;
 
 import androidx.room.TypeConverter;
 
-import static com.example.drivingstyleassistant.domain.entities.Events.EventType.AggressiveAcceleration;
-import static com.example.drivingstyleassistant.domain.entities.Events.EventType.DangerousCornering;
-import static com.example.drivingstyleassistant.domain.entities.Events.EventType.RapidDriving;
-import static com.example.drivingstyleassistant.domain.entities.Events.EventType.SuddenBraking;
+import static com.example.drivingstyleassistant.domain.entities.Events.EventType.*;
 
 public class EventTypeConverter {
 
