@@ -2,7 +2,6 @@ package com.example.drivingstyleassistant.data;
 
 import org.apache.commons.math3.analysis.interpolation.LoessInterpolator;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SoftnessGrade implements GradeHelper {
@@ -10,15 +9,24 @@ public class SoftnessGrade implements GradeHelper {
     public ArrayList<Double> speeds;
     public ArrayList<Double> xValsList;
     public double[] smooths;
+    int deviationsCounter = 0;
 
     public float grade(){
+        deviationsCounter = 0;
+        analyze();
+        float grade = 5 * (deviationsCounter/smooths.length);
 
+        return grade;
     }
 
     public void analyze(){
         LoessInterpolator loessInterpolator = new LoessInterpolator();
         smooths = loessInterpolator.smooth(arrayListToDoubleArray(xValsList), arrayListToDoubleArray(speeds));
-
+        for(int i = 0; i < smooths.length; i++){
+            if(Math.abs(speeds.get(i) - smooths[i]) > 10){
+                deviationsCounter++;
+            }
+        }
     }
 
     public double[] arrayListToDoubleArray(ArrayList<Double> arrayList){
