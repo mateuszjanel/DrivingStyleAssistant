@@ -4,12 +4,12 @@ import org.apache.commons.math3.analysis.interpolation.LoessInterpolator;
 
 import java.util.ArrayList;
 
-public class SoftnessGrade implements GradeHelper {
+public class SoftnessFragmentaryGrade implements GradeHelper {
 
     public ArrayList<Double> speeds;
     public ArrayList<Double> xValsList;
     public double[] smooths;
-    int deviationsCounter = 0;
+    int deviationsCounter;
 
     public float grade(){
         deviationsCounter = 0;
