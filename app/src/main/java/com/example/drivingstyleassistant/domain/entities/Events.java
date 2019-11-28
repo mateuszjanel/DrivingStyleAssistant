@@ -92,7 +92,7 @@ public class Events {
         this.timestamp = timestamp;
     }
 
-    public int getRouteId() {
+    public long getRouteId() {
         return routeId;
     }
 
