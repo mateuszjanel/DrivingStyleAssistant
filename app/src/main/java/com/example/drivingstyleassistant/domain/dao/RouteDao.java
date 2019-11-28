@@ -18,8 +18,8 @@ public interface RouteDao {
     @Insert
     long insert(Route route);
 
-    @Query("UPDATE routes SET route_date = :_routeDate, mark = :_mark, sudden_breakings = :_suddenBreakings, sudden_accelerations = :_suddenAccelerations, smoothness = :_smoothness, dangerous_cornering = :_dangerousCornering WHERE id = :_id")
-    void updateRoute(long _id, Date _routeDate, float _mark, float _suddenBreakings, float _suddenAccelerations, float _smoothness, float _dangerousCornering);
+    @Query("UPDATE routes SET route_date = :_routeDate, mark = :_mark, sudden_breakings = :_breakingGrade, sudden_accelerations = :_acceleratingGrade, smoothness = :_smoothness, dangerous_cornering = :_dangerousCornering WHERE id = :_id")
+    void updateRoute(long _id, Date _routeDate, float _mark, float _breakingGrade, float _acceleratingGrade, float _smoothness, float _dangerousCornering);
 
     @Query("UPDATE routes SET smoothness = :_smoothness WHERE id = :_id")
     void updateSmoothnessGrade(long _id, float _smoothness);
