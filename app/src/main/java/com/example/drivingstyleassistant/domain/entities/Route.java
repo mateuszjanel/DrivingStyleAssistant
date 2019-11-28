@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "routes")
 public class Route {
     @PrimaryKey (autoGenerate = true)
-    private int id;
+    private long id;
     @ColumnInfo(name = "route_date")
     private Date routeDate;
     @ColumnInfo(name = "mark")
@@ -23,7 +23,7 @@ public class Route {
     @ColumnInfo(name = "dangerous_cornering")
     private float dangerousCornering;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -77,5 +77,9 @@ public class Route {
 
     public void setDangerousCornering(float dangerousCornering) {
         this.dangerousCornering = dangerousCornering;
+    }
+
+    public Route(Date routeDate) {
+        this.routeDate = routeDate;
     }
 }
