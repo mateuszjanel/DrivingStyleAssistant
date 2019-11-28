@@ -2,7 +2,7 @@ package com.example.drivingstyleassistant.data;
 
 import java.util.ArrayList;
 
-public class SoftnessFinalGrade implements GradeHelper {
+public class SmoothnessFinalGrade implements GradeHelper {
 
     ArrayList<Float> fragmentaryGrades = new ArrayList<>();
     float sum;

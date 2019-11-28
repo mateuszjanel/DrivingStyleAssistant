@@ -4,7 +4,7 @@ import org.apache.commons.math3.analysis.interpolation.LoessInterpolator;
 
 import java.util.ArrayList;
 
-public class SoftnessFragmentaryGrade implements GradeHelper {
+public class SmoothnessFragmentaryGrade implements GradeHelper {
 
     public ArrayList<Double> speeds;
     public ArrayList<Double> xValsList;

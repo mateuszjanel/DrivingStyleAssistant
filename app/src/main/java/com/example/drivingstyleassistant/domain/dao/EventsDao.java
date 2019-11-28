@@ -14,7 +14,7 @@ public interface EventsDao {
     void insertAll(Events... events);
 
     @Insert
-    int insert(Events event);
+    long insert(Events event);
 
     @Query("UPDATE EVENTS SET g_force = :gforce, degree = :degree, grade_loss = :gradeloss, event_type = :eventtype WHERE id = :ID")
     void updateEvent(int ID, float gforce, int degree, float gradeloss, Events.EventType eventtype);
