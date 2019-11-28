@@ -1,5 +1,7 @@
 package com.example.drivingstyleassistant.domain.entities;
 
+import java.sql.Date;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -14,18 +16,22 @@ import androidx.room.TypeConverters;
 public class Events {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
+    @ColumnInfo(name = "timestamp")
+    private Date timestamp;
     @ColumnInfo(name = "g_force")
     private float gForce;
     @ColumnInfo(name = "degree")
     private int degree;
     @ColumnInfo(name = "grade_loss")
     private float gradeLoss;
+    @ColumnInfo(name = "speed")
+    private float speed;
     @ColumnInfo(name = "event_type")
     @TypeConverters(EventTypeConverter.class)
     EventType eventType;
     @ColumnInfo(name = "route_id")
-    private int routeId;
+    private long routeId;
 
 
     public enum EventType{
@@ -46,11 +52,11 @@ public class Events {
     }
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -78,6 +84,14 @@ public class Events {
         this.gradeLoss = gradeLoss;
     }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public int getRouteId() {
         return routeId;
     }
@@ -86,12 +100,13 @@ public class Events {
         this.routeId = routeId;
     }
 
-    public Events(int id, float gForce, int degree, float gradeLoss, EventType eventType, int routeId) {
-        this.id = id;
+    public Events(Date timestamp, float gForce, int degree, float gradeLoss, EventType eventType, long routeId, float speed) {
+        this.timestamp = timestamp;
         this.gForce = gForce;
         this.degree = degree;
         this.gradeLoss = gradeLoss;
         this.eventType = eventType;
         this.routeId = routeId;
+        this.speed = speed;
     }
 }

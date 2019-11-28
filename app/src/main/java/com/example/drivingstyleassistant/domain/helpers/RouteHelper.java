@@ -11,7 +11,7 @@ public class RouteHelper {
     ContextService contextService = ContextService.getContextService();
     AppDatabase appDatabase = AppDatabase.getAppDatabase(contextService.appContext);
 
-    long startRoute(){
+    public long startRoute() {
         Date currentTime = Calendar.getInstance().getTime();
         Route newRoute = new Route(currentTime);
         long newId;
@@ -19,18 +19,22 @@ public class RouteHelper {
         return newId;
     }
 
-    void setSmoothnessGrade(float grade, long routeId){
+    public void setSmoothnessGrade(float grade, long routeId) {
         appDatabase.routeDao().updateSmoothnessGrade(routeId, grade);
     }
 
-    float getGradeFromRoute(String type, long routeId){
+    public float getGradeFromRoute(String type, long routeId) {
         Route route = appDatabase.routeDao().getRouteById(routeId);
         float gradeToReturn = -1;
-        switch(type){
+        switch (type) {
             case "smoothness":
                 gradeToReturn = route.getSmoothness();
             case "acceleration":
-                gradeToReturn = route.getSuddenAccelerationsNumber();
+                gradeToReturn = route.getAcceleratingGrade();
+            case "breaking" :
+                gradeToReturn = route.getBreakingGrade();
+            case "cornering":
+                gradeToReturn = route.getDangerousCornering();
         }
         return gradeToReturn;
     }

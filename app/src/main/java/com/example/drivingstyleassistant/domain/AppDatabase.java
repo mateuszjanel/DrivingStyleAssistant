@@ -2,20 +2,23 @@ package com.example.drivingstyleassistant.domain;
 
 import android.content.Context;
 
+import com.example.drivingstyleassistant.domain.dao.EventsDao;
 import com.example.drivingstyleassistant.domain.dao.RouteDao;
+import com.example.drivingstyleassistant.domain.entities.Events;
 import com.example.drivingstyleassistant.domain.entities.Route;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Route.class}, version = 1, exportSchema = false)
+@Database(entities = {Route.class, Events.class}, version = 1, exportSchema = false)
 
 public abstract class AppDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "DrivingStyleAssistantTestDB";
     private static AppDatabase INSTANCE;
 
     public abstract RouteDao routeDao();
+    public abstract EventsDao eventsDao();
 
     public static AppDatabase getAppDatabase(Context context) {
         if (INSTANCE == null) {
