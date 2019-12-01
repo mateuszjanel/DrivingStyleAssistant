@@ -9,21 +9,21 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "routes")
 public class Route {
     @PrimaryKey (autoGenerate = true)
-    private int id;
+    private long id;
     @ColumnInfo(name = "route_date")
     private Date routeDate;
     @ColumnInfo(name = "mark")
     private float mark;
     @ColumnInfo(name = "sudden_breakings")
-    private float suddenBreakingsNumber;
+    private float breakingGrade;
     @ColumnInfo(name = "sudden_accelerations")
-    private float suddenAccelerationsNumber;
+    private float acceleratingGrade;
     @ColumnInfo(name = "smoothness")
     private float smoothness;
     @ColumnInfo(name = "dangerous_cornering")
     private float dangerousCornering;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -47,20 +47,20 @@ public class Route {
         this.mark = mark;
     }
 
-    public float getSuddenBreakingsNumber() {
-        return suddenBreakingsNumber;
+    public float getBreakingGrade() {
+        return breakingGrade;
     }
 
-    public void setSuddenBreakingsNumber(float suddenBreakingsNumber) {
-        this.suddenBreakingsNumber = suddenBreakingsNumber;
+    public void setSuddenBreakingsNumber(float breakingGrade) {
+        this.breakingGrade = breakingGrade;
     }
 
-    public float getSuddenAccelerationsNumber() {
-        return suddenAccelerationsNumber;
+    public float getAcceleratingGrade() {
+        return acceleratingGrade;
     }
 
-    public void setSuddenAccelerationsNumber(float suddenAccelerationsNumber) {
-        this.suddenAccelerationsNumber = suddenAccelerationsNumber;
+    public void setAcceleratingGrade(float acceleratingGrade) {
+        this.acceleratingGrade = acceleratingGrade;
     }
 
     public float getSmoothness() {
@@ -77,5 +77,9 @@ public class Route {
 
     public void setDangerousCornering(float dangerousCornering) {
         this.dangerousCornering = dangerousCornering;
+    }
+
+    public Route(Date routeDate) {
+        this.routeDate = routeDate;
     }
 }
