@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">DrivingStyleAssistant</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">DrivingStyleAssistant</string>
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="gps_check_message">Location unavailable. Please turn the service on.</string>
+    <string name="accelerating">Accelerating</string>
+    <string name="braking">Braking</string>
+    <string name="smoothness" >Driving smoothness</string>
+    <string name="cornering">Cornering</string>
 </resources>

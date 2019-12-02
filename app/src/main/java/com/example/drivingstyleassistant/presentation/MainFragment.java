@@ -37,24 +37,25 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         TextView meanGradeTextView = (TextView) getActivity().findViewById(R.id.meanGradeTextView);
-        ImageView gradeBackground = (ImageView) getActivity().findViewById(R.id.gradeBackgroundImageView);
+        ImageView meanGradeBackground = (ImageView) getActivity().findViewById(R.id.meanGradeBackgroundImageView);
 
         RouteHelper routeHelper = new RouteHelper();
 
         float meanGrade = routeHelper.getMeanGrade(0);
-        meanGradeTextView.setText(String.valueOf(meanGrade));
+        changeGrade(meanGradeBackground, meanGrade, meanGradeTextView);
+    }
 
-        if(meanGrade < 3){
+
+    void changeGrade(ImageView gradeBackground, float grade, TextView gradeText) {
+        gradeText.setText(String.valueOf(grade));
+        if (grade < 3) {
             gradeBackground.setImageResource(R.color.negativeGrade);
-        }
-        else if(meanGrade >= 3 && meanGrade < 4){
+        } else if (grade >= 3 && grade < 4) {
             gradeBackground.setImageResource(R.color.averageGrade);
-        }
-        else if (meanGrade >= 4 && meanGrade <= 5){
+        } else if (grade >= 4 && grade <= 5) {
             gradeBackground.setImageResource(R.color.positiveGrade);
         }
     }
-
 }

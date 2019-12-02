@@ -8,7 +8,7 @@
     tools:context=".presentation.MainFragment">
 
     <ImageView
-        android:id="@+id/gradeBackgroundImageView"
+        android:id="@+id/meanGradeBackgroundImageView"
         android:layout_width="157dp"
         android:layout_height="149dp"
         android:layout_marginStart="8dp"
@@ -24,10 +24,224 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="textView"
-        app:layout_constraintBottom_toBottomOf="@+id/gradeBackgroundImageView"
-        app:layout_constraintEnd_toEndOf="@+id/gradeBackgroundImageView"
-        app:layout_constraintStart_toStartOf="@+id/gradeBackgroundImageView"
-        app:layout_constraintTop_toTopOf="@+id/gradeBackgroundImageView"
-        android:textSize="@dimen/main_grade" />
+        android:textSize="@dimen/main_grade"
+        app:layout_constraintBottom_toBottomOf="@+id/meanGradeBackgroundImageView"
+        app:layout_constraintEnd_toEndOf="@+id/meanGradeBackgroundImageView"
+        app:layout_constraintStart_toStartOf="@+id/meanGradeBackgroundImageView"
+        app:layout_constraintTop_toTopOf="@+id/meanGradeBackgroundImageView" />
+
+    <TableLayout
+        android:layout_width="395dp"
+        android:layout_height="516dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meanGradeBackgroundImageView">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/tableConstrainLayout1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                tools:context=".presentation.MainFragment">
+
+                <ImageView
+                    android:id="@+id/acceleratingGradeBackgroundImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:src="@color/positiveGrade"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/accelerationGradeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="textView"
+                    android:textSize="@dimen/particular_grade"
+                    app:layout_constraintBottom_toBottomOf="@+id/acceleratingGradeBackgroundImageView"
+                    app:layout_constraintEnd_toEndOf="@+id/acceleratingGradeBackgroundImageView"
+                    app:layout_constraintStart_toStartOf="@+id/acceleratingGradeBackgroundImageView"
+                    app:layout_constraintTop_toTopOf="@+id/acceleratingGradeBackgroundImageView" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/accelerationLabel"
+                android:layout_margin="25dp"
+                android:text="@string/accelerating"
+                android:textSize="@dimen/element_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/acceleratingGradeBackgroundImageView"
+                app:layout_constraintTop_toTopOf="parent" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/tableConstrainLayout2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                tools:context=".presentation.MainFragment">
+
+                <ImageView
+                    android:id="@+id/brakingGradeBackgroundImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:src="@color/positiveGrade"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/brakingGradeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="textView"
+                    android:textSize="@dimen/particular_grade"
+                    app:layout_constraintBottom_toBottomOf="@+id/brakingGradeBackgroundImageView"
+                    app:layout_constraintEnd_toEndOf="@+id/brakingGradeBackgroundImageView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/brakingGradeBackgroundImageView" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/brakingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:text="@string/braking"
+                android:textSize="@dimen/element_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/acceleratingGradeBackgroundImageView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/tableConstrainLayout3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                tools:context=".presentation.MainFragment">
+
+                <ImageView
+                    android:id="@+id/smoothnessGradeBackgroundImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:src="@color/positiveGrade"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/smoothnessGradeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="textView"
+                    android:textSize="@dimen/particular_grade"
+                    app:layout_constraintBottom_toBottomOf="@+id/smoothnessGradeBackgroundImageView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/smoothnessGradeBackgroundImageView" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/smoothnessLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:text="@string/smoothness"
+                android:textSize="@dimen/element_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/acceleratingGradeBackgroundImageView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/tableConstrainLayout4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                tools:context=".presentation.MainFragment">
+
+                <ImageView
+                    android:id="@+id/corneringGradeBackgroundImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:src="@color/positiveGrade"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/corneringGradeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="textView"
+                    android:textSize="@dimen/particular_grade"
+                    app:layout_constraintBottom_toBottomOf="@+id/corneringGradeBackgroundImageView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/corneringLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:text="@string/cornering"
+                android:textSize="@dimen/element_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/acceleratingGradeBackgroundImageView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </TableRow>
+
+    </TableLayout>
 
 </android.support.constraint.ConstraintLayout>
