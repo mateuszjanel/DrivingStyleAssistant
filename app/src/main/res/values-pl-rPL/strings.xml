@@ -8,4 +8,5 @@
     <string name="braking">Hamowanie</string>
     <string name="smoothness">Płynność jazdy</string>
     <string name="cornering">Pokonywanie zakrętów</string>
+    <string name="meanGrade">Średnia ocena</string>
 </resources>

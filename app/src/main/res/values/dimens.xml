@@ -1,6 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="main_grade">32dp</dimen>
-    <dimen name="particular_grade">20dp</dimen>
+    <dimen name="main_grade">60dp</dimen>
+    <dimen name="particular_grade">40dp</dimen>
     <dimen name="element_name">24</dimen>
 </resources>

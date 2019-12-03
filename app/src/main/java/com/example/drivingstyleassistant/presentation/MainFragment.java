@@ -41,10 +41,30 @@ public class MainFragment extends Fragment {
         TextView meanGradeTextView = (TextView) getActivity().findViewById(R.id.meanGradeTextView);
         ImageView meanGradeBackground = (ImageView) getActivity().findViewById(R.id.meanGradeBackgroundImageView);
 
+        TextView acceleratingGradeTextView = (TextView) getActivity().findViewById(R.id.accelerationGradeText);
+        ImageView acceleratingGradeBackground = (ImageView) getActivity().findViewById(R.id.acceleratingGradeBackgroundImageView);
+
+        TextView brakingGradeTextView = (TextView) getActivity().findViewById(R.id.brakingGradeText);
+        ImageView brakingGradeBackground = (ImageView) getActivity().findViewById(R.id.brakingGradeBackgroundImageView);
+
+        TextView smoothnessGradeTextView = (TextView) getActivity().findViewById(R.id.smoothnessGradeText);
+        ImageView smoothnessGradeBackground = (ImageView) getActivity().findViewById(R.id.smoothnessGradeBackgroundImageView);
+
+        TextView corneringGradeTextView = (TextView) getActivity().findViewById(R.id.corneringGradeText);
+        ImageView corneringGradeBackground = (ImageView) getActivity().findViewById(R.id.corneringGradeBackgroundImageView);
+
         RouteHelper routeHelper = new RouteHelper();
 
         float meanGrade = routeHelper.getMeanGrade(0);
+        float acceleratingGrade = routeHelper.getMeanGrade(1);
+        float brakingGrade = routeHelper.getMeanGrade(2);
+        float smoothnessGrade = routeHelper.getMeanGrade(3);
+        float corneringGrade = routeHelper.getMeanGrade(4);
         changeGrade(meanGradeBackground, meanGrade, meanGradeTextView);
+        changeGrade(corneringGradeBackground, acceleratingGrade, acceleratingGradeTextView);
+        changeGrade(brakingGradeBackground, brakingGrade, brakingGradeTextView);
+        changeGrade(smoothnessGradeBackground, smoothnessGrade, smoothnessGradeTextView);
+        changeGrade(corneringGradeBackground, corneringGrade, corneringGradeTextView);
     }
 
 

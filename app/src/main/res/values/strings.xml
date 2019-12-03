@@ -10,4 +10,5 @@
     <string name="braking">Braking</string>
     <string name="smoothness" >Driving smoothness</string>
     <string name="cornering">Cornering</string>
+    <string name="meanGrade">Mean grade</string>
 </resources>
