@@ -8,7 +8,8 @@
     <string name="gps_check_message">Location unavailable. Please turn the service on.</string>
     <string name="accelerating">Accelerating</string>
     <string name="braking">Braking</string>
-    <string name="smoothness" >Driving smoothness</string>
+    <string name="smoothness">Driving smoothness</string>
     <string name="cornering">Cornering</string>
     <string name="meanGrade">Mean grade</string>
+    <string name="startRoute">Start route</string>
 </resources>

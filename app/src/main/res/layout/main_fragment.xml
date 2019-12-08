@@ -54,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/meanGradeBackgroundImageView">
+        app:layout_constraintTop_toBottomOf="@+id/startRouteButton">
 
         <TableRow
             android:layout_width="match_parent"
@@ -257,5 +257,18 @@
         </TableRow>
 
     </TableLayout>
+
+    <Button
+        android:id="@+id/startRouteButton"
+        android:layout_width="157dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/startRoute"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meanGradeBackgroundImageView" />
 
 </android.support.constraint.ConstraintLayout>
