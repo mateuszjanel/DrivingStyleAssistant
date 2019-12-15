@@ -15,4 +15,12 @@ public class EventHelper {
         Events events = new Events(dateStamp, gForce, degree, gradeLoss, eventType, routeId, speed);
         appDatabase.eventsDao().insert(events);
     }
+
+    public boolean checkIfTransgression(float acceleration){
+        boolean transgression = false;
+        if((acceleration / 9.81) > 0.4 || (acceleration / 9.81) < -0.4){
+            transgression = true;
+        }
+        return transgression;
+    }
 }

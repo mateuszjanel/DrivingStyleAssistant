@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.drivingstyleassistant.R;
+import com.example.drivingstyleassistant.data.AccelerationsGrade;
+import com.example.drivingstyleassistant.domain.helpers.EventHelper;
 import com.example.drivingstyleassistant.domain.helpers.RouteHelper;
 
 
@@ -38,11 +40,18 @@ public class RouteFragment extends Fragment implements SensorEventListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    Long currentRouteId;
+
     SensorManager sensorManager;
     Sensor accelerationSensor;
     RouteHelper routeHelper;
 
+    float currentSpeed;
     int accTransgression;
+    double maxAccelerationInEvent;
+    SensorEvent maxSensorEvent;
+    float maxSpeed;
+    boolean isPositive;
 
 
     private OnFragmentInteractionListener mListener;
@@ -96,8 +105,9 @@ public class RouteFragment extends Fragment implements SensorEventListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         routeHelper = new RouteHelper();
-        Long currentRouteId = routeHelper.startRoute();
+        currentRouteId = routeHelper.startRoute();
         accTransgression = 0;
+        isPositive = true;
 
         //accelerometer
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -128,7 +138,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
             final LocationListener locationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
                     // Called when a new location is found by the network location provider.
-
+                    currentSpeed = location.getSpeed();
                 }
 
                 public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -155,10 +165,44 @@ public class RouteFragment extends Fragment implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event){
         Sensor sensor = event.sensor;
+        EventHelper eventHelper = new EventHelper();
 
         float accelerometerX = event.values[0];
         float accelerometerY = event.values[1];
         float accelerometerZ = event.values[2];
+
+        if(eventHelper.checkIfTransgression(accelerometerZ)){
+            accTransgression = 1;
+            double accelerationInG = (accelerometerZ / 9.81);
+            if(accelerometerZ < 0) {
+                isPositive = false;
+            }
+            if(Math.abs(accelerationInG) > maxAccelerationInEvent){
+                maxAccelerationInEvent = accelerationInG;
+                maxSensorEvent = event;
+                maxSpeed = currentSpeed;
+            }
+        }
+        if(eventHelper.checkIfTransgression(accelerometerX)){
+            accTransgression = 2;
+        }
+
+
+        if(!eventHelper.checkIfTransgression(accelerometerX) && !eventHelper.checkIfTransgression(accelerometerZ)){
+            if(accTransgression == 1){
+                if(isPositive == false){
+                    maxAccelerationInEvent = maxAccelerationInEvent * (-1);
+                }
+                AccelerationsGrade accelerationsGrade = new AccelerationsGrade();
+                accelerationsGrade.grade(maxSensorEvent, currentRouteId, maxSpeed);
+            }
+
+            accTransgression = 0;
+            maxAccelerationInEvent = 0;
+            isPositive = true;
+        }
+
+
     }
 
     @Override
