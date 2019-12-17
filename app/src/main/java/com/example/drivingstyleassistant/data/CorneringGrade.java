@@ -6,7 +6,8 @@ import com.example.drivingstyleassistant.domain.entities.Events;
 import com.example.drivingstyleassistant.domain.helpers.EventHelper;
 import com.example.drivingstyleassistant.domain.helpers.RouteHelper;
 
-public class AccelerationsGrade implements GradeHelper{
+public class CorneringGrade implements GradeHelper {
+
     float accelerationInG;
     float gradeLoss;
     Events.EventType eventType;
@@ -23,30 +24,21 @@ public class AccelerationsGrade implements GradeHelper{
     public float grade(SensorEvent sensorEvent, long routeId, float speed){
         accelerationInG = analyzeData(sensorEvent, routeId);
         float previousGrade;
-        String typeOfEvent = "";
         RouteHelper routeHelper = new RouteHelper();
         EventHelper eventHelper = new EventHelper();
         analyze();
-        if(accelerationInG > 0){
-            previousGrade = routeHelper.getGradeFromRoute("acceleration", routeId);
-            eventType = Events.EventType.valueOf("AggressiveAcceleration");
-            typeOfEvent = "acceleration";
-        }
-        else if(accelerationInG < 0){
-            previousGrade = routeHelper.getGradeFromRoute("breaking", routeId);
-            eventType = Events.EventType.valueOf("SuddenBreaking");
-            typeOfEvent = "breaking";
-        }
+        previousGrade = routeHelper.getGradeFromRoute("cornering", routeId);
+        eventType = Events.EventType.valueOf("DangerousCornering");
         eventHelper.addEventAcceleration(routeId, gradeLoss, speed, degree, accelerationInG, eventType, sensorEvent.timestamp);
-        routeHelper.updateGrade(gradeLoss, routeId, typeOfEvent);
-        return gradeLoss;
+
+        return 0;
     }
 
     public void gradeOnly(float gradeAdd, long routeId){
         RouteHelper routeHelper = new RouteHelper();
-        routeHelper.updateGrade(gradeAdd * (-1), routeId, "acceleration");
-        routeHelper.updateGrade(gradeAdd *(-1), routeId, "breaking");
+        routeHelper.updateGrade(gradeAdd * (-1), routeId, "cornering");
     }
+
 
     @Override
     public void analyze() {

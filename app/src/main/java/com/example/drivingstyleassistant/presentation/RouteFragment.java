@@ -22,6 +22,9 @@ import android.widget.Toast;
 
 import com.example.drivingstyleassistant.R;
 import com.example.drivingstyleassistant.data.AccelerationsGrade;
+import com.example.drivingstyleassistant.data.CorneringGrade;
+import com.example.drivingstyleassistant.data.SmoothnessFinalGrade;
+import com.example.drivingstyleassistant.data.SmoothnessFragmentaryGrade;
 import com.example.drivingstyleassistant.domain.helpers.EventHelper;
 import com.example.drivingstyleassistant.domain.helpers.RouteHelper;
 
@@ -48,10 +51,17 @@ public class RouteFragment extends Fragment implements SensorEventListener {
 
     float currentSpeed;
     int accTransgression;
-    double maxAccelerationInEvent;
-    SensorEvent maxSensorEvent;
-    float maxSpeed;
-    boolean isPositive;
+    int corneringTransgression;
+    double maxAccelerationInEvent, maxCorneringAccInEvent;
+    SensorEvent maxAccelerationSensorEvent, maxCorneringSensorEvent;
+    float maxAccelerationSpeed, maxCorneringSpeed;
+    boolean isAccelerationPositive, isCorneringPositive;
+
+    boolean drivingStarted;
+    SmoothnessFragmentaryGrade smoothnessFragmentaryGrade;
+    SmoothnessFinalGrade smoothnessFinalGrade;
+    long lastShotTakenTime;
+    long lastEventTime;
 
 
     private OnFragmentInteractionListener mListener;
@@ -106,12 +116,16 @@ public class RouteFragment extends Fragment implements SensorEventListener {
     public void onViewCreated(View view, Bundle savedInstanceState){
         routeHelper = new RouteHelper();
         currentRouteId = routeHelper.startRoute();
+        drivingStarted = false;
         accTransgression = 0;
-        isPositive = true;
+        corneringTransgression = 0;
+        isAccelerationPositive = true;
+        isCorneringPositive = true;
+        smoothnessFinalGrade = new SmoothnessFinalGrade();
 
         //accelerometer
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 
         final LocationManager locationManager = (LocationManager) getActivity().getSystemService(getActivity().getApplicationContext().LOCATION_SERVICE);
         final String locationProvider = LocationManager.GPS_PROVIDER;
@@ -139,6 +153,32 @@ public class RouteFragment extends Fragment implements SensorEventListener {
                 public void onLocationChanged(Location location) {
                     // Called when a new location is found by the network location provider.
                     currentSpeed = location.getSpeed();
+                    if(currentSpeed > 0 && drivingStarted == false){
+                        smoothnessFragmentaryGrade = new SmoothnessFragmentaryGrade();
+                        drivingStarted = true;
+                        lastShotTakenTime = System.currentTimeMillis();
+                    }
+                    else if(currentSpeed > 0 && drivingStarted == true){
+                        long deltaTime = System.currentTimeMillis() - lastShotTakenTime;
+                        double deltaTimeInSec = deltaTime / 1000.0;
+                        if((deltaTime / 1000.0) > 1.5){
+                            smoothnessFragmentaryGrade.speeds.add((double)currentSpeed);
+                            lastShotTakenTime = System.currentTimeMillis();
+                            if(smoothnessFragmentaryGrade.xValsList.isEmpty()){
+                                smoothnessFragmentaryGrade.xValsList.add((double)deltaTimeInSec);
+                            }
+                            else {
+                                smoothnessFragmentaryGrade.xValsList
+                                        .add(smoothnessFragmentaryGrade.xValsList
+                                                .get(smoothnessFragmentaryGrade.xValsList.size()-1) + deltaTimeInSec);
+                            }
+                        }
+                    }
+                    else if(currentSpeed == 0 && drivingStarted == true){
+                        smoothnessFinalGrade.fragmentaryGrades.add(smoothnessFragmentaryGrade.grade());
+                        drivingStarted = false;
+                    }
+
                 }
 
                 public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -173,36 +213,61 @@ public class RouteFragment extends Fragment implements SensorEventListener {
 
         if(eventHelper.checkIfTransgression(accelerometerZ)){
             accTransgression = 1;
-            double accelerationInG = (accelerometerZ / 9.81);
+            double accelerationInG = Math.abs(accelerometerZ / 9.81);
             if(accelerometerZ < 0) {
-                isPositive = false;
+                isAccelerationPositive = false;
             }
             if(Math.abs(accelerationInG) > maxAccelerationInEvent){
                 maxAccelerationInEvent = accelerationInG;
-                maxSensorEvent = event;
-                maxSpeed = currentSpeed;
+                maxAccelerationSensorEvent = event;
+                maxAccelerationSpeed = currentSpeed;
             }
         }
-        if(eventHelper.checkIfTransgression(accelerometerX)){
-            accTransgression = 2;
-        }
-
-
-        if(!eventHelper.checkIfTransgression(accelerometerX) && !eventHelper.checkIfTransgression(accelerometerZ)){
-            if(accTransgression == 1){
-                if(isPositive == false){
-                    maxAccelerationInEvent = maxAccelerationInEvent * (-1);
-                }
-                AccelerationsGrade accelerationsGrade = new AccelerationsGrade();
-                accelerationsGrade.grade(maxSensorEvent, currentRouteId, maxSpeed);
+        else if(!eventHelper.checkIfTransgression(accelerometerZ) && accTransgression == 1){
+            if(isAccelerationPositive == false){
+                maxAccelerationInEvent = maxAccelerationInEvent * (-1);
             }
-
+            AccelerationsGrade accelerationsGrade = new AccelerationsGrade();
+            accelerationsGrade.grade(maxAccelerationSensorEvent, currentRouteId, maxAccelerationSpeed);
             accTransgression = 0;
             maxAccelerationInEvent = 0;
-            isPositive = true;
+            isAccelerationPositive = true;
+            lastEventTime = System.currentTimeMillis();
         }
 
+        if(eventHelper.checkIfTransgression(accelerometerX)){
+            corneringTransgression = 1;
+            double accelerationInG = Math.abs(accelerometerX / 9.81);
+            if(accelerometerX < 0){
+                isCorneringPositive = false;
+            }
+            if(Math.abs(accelerationInG) > maxAccelerationInEvent){
+                maxCorneringAccInEvent = accelerationInG;
+                maxCorneringSensorEvent = event;
+                maxCorneringSpeed = currentSpeed;
+            }
+        }
 
+        else if(!eventHelper.checkIfTransgression(accelerometerX) && corneringTransgression == 1){
+            if(isCorneringPositive == false){
+                maxCorneringAccInEvent = maxAccelerationInEvent * (-1);
+            }
+            CorneringGrade corneringGrade = new CorneringGrade();
+            corneringGrade.grade(maxCorneringSensorEvent, currentRouteId, maxCorneringSpeed);
+            corneringTransgression = 0;
+            maxCorneringAccInEvent = 0;
+            isCorneringPositive = true;
+            lastEventTime = System.currentTimeMillis();
+        }
+
+        double elapsedTime = (System.currentTimeMillis() - lastEventTime) / 1000.0;
+
+        if(drivingStarted == true && !eventHelper.checkIfTransgression(accelerometerZ) && !eventHelper.checkIfTransgression(accelerometerX) && elapsedTime > 60) {
+            CorneringGrade corneringGrade = new CorneringGrade();
+            AccelerationsGrade accelerationsGrade = new AccelerationsGrade();
+            corneringGrade.gradeOnly(0.2f, currentRouteId);
+            accelerationsGrade.gradeOnly(0.2f, currentRouteId);
+        }
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class SmoothnessFinalGrade implements GradeHelper {
 
-    ArrayList<Float> fragmentaryGrades = new ArrayList<>();
+    public ArrayList<Float> fragmentaryGrades = new ArrayList<>();
     float sum;
 
     @Override

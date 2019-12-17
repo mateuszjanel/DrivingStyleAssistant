@@ -5,7 +5,7 @@ import com.example.drivingstyleassistant.domain.AppDatabase;
 import com.example.drivingstyleassistant.domain.entities.Route;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class RouteHelper {
@@ -13,7 +13,7 @@ public class RouteHelper {
     AppDatabase appDatabase = AppDatabase.getAppDatabase(contextService.appContext);
 
     public long startRoute() {
-        Date currentTime = Calendar.getInstance().getTime();
+        Date currentTime = (Date) Calendar.getInstance().getTime();
         Route newRoute = new Route(currentTime);
         long newId;
         newId = appDatabase.routeDao().insert(newRoute);
@@ -22,6 +22,22 @@ public class RouteHelper {
 
     public void setSmoothnessGrade(float grade, long routeId) {
         appDatabase.routeDao().updateSmoothnessGrade(routeId, grade);
+    }
+    public void updateGrade(float gradeLoss, long routeId, String type)  {
+        Route route = appDatabase.routeDao().getRouteById(routeId);
+        float lastGrade;
+        switch(type){
+            case "acceleration":
+                lastGrade = route.getAcceleratingGrade();
+                route.setAcceleratingGrade(lastGrade - gradeLoss);
+            case "breaking" :
+                lastGrade = route.getBreakingGrade();
+                route.setAcceleratingGrade(lastGrade - gradeLoss);
+            case "cornering":
+                lastGrade = route.getDangerousCornering();
+                route.setAcceleratingGrade(lastGrade - gradeLoss);
+        }
+        appDatabase.routeDao().updateRoute(routeId, (Date) route.getRouteDate(), route.getMark(), route.getBreakingGrade(), route.getAcceleratingGrade(), route.getSmoothness(), route.getDangerousCornering());
     }
 
     public float getGradeFromRoute(String type, long routeId) {
