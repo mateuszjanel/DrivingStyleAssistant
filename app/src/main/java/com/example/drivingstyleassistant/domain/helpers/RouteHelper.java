@@ -23,19 +23,27 @@ public class RouteHelper {
     public void setSmoothnessGrade(float grade, long routeId) {
         appDatabase.routeDao().updateSmoothnessGrade(routeId, grade);
     }
+
+
+
     public void updateGrade(float gradeLoss, long routeId, String type)  {
         Route route = appDatabase.routeDao().getRouteById(routeId);
-        float lastGrade;
+        CommonHelper commonHelper = new CommonHelper();
+        float lastGrade, newGrade;
         switch(type){
             case "acceleration":
                 lastGrade = route.getAcceleratingGrade();
-                route.setAcceleratingGrade(lastGrade - gradeLoss);
+                newGrade = commonHelper.checkGradeLimits(lastGrade - gradeLoss);
+
+                route.setAcceleratingGrade(newGrade);
             case "breaking" :
                 lastGrade = route.getBreakingGrade();
-                route.setAcceleratingGrade(lastGrade - gradeLoss);
+                newGrade = commonHelper.checkGradeLimits(lastGrade - gradeLoss);
+                route.setSuddenBreakingsNumber(newGrade);
             case "cornering":
                 lastGrade = route.getDangerousCornering();
-                route.setAcceleratingGrade(lastGrade - gradeLoss);
+                newGrade = commonHelper.checkGradeLimits(lastGrade - gradeLoss);
+                route.setDangerousCornering(newGrade);
         }
         appDatabase.routeDao().updateRoute(routeId, (Date) route.getRouteDate(), route.getMark(), route.getBreakingGrade(), route.getAcceleratingGrade(), route.getSmoothness(), route.getDangerousCornering());
     }
