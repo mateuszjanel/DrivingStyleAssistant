@@ -1,14 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.RouteFragment">
+    tools:context=".presentation.RouteFragment" >
 
-    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:id="@+id/zPlusBackground"
+        android:layout_width="@dimen/background_square"
+        android:layout_height="@dimen/background_square"
+        android:layout_marginTop="48dp"
+        android:src="@color/positiveGrade"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/zMinusBackground"
+        android:layout_width="@dimen/background_square"
+        android:layout_height="@dimen/background_square"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="8dp"
+        android:src="@color/positiveGrade"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/xPlusBackground" />
+
+    <ImageView
+        android:id="@+id/xPlusBackground"
+        android:layout_width="@dimen/background_square"
+        android:layout_height="@dimen/background_square"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="16dp"
+        android:src="@color/positiveGrade"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/zPlusBackground" />
+
+    <ImageView
+        android:id="@+id/xMinusBackground"
+        android:layout_width="@dimen/background_square"
+        android:layout_height="@dimen/background_square"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="92dp"
+        android:src="@color/positiveGrade"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/zPlusBackground" />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/zPlusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="@dimen/live_data_size"
+        app:layout_constraintBottom_toBottomOf="@+id/zPlusBackground"
+        app:layout_constraintEnd_toEndOf="@+id/zPlusBackground"
+        app:layout_constraintStart_toStartOf="@+id/zPlusBackground"
+        app:layout_constraintTop_toTopOf="@+id/zPlusBackground" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/xMinusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="@dimen/live_data_size"
+        app:layout_constraintBottom_toBottomOf="@+id/xMinusBackground"
+        app:layout_constraintEnd_toEndOf="@+id/xMinusBackground"
+        app:layout_constraintStart_toStartOf="@+id/xMinusBackground"
+        app:layout_constraintTop_toTopOf="@+id/xMinusBackground"
+        app:layout_constraintVertical_bias="0.494" />
+
+    <TextView
+        android:id="@+id/xPlusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="@dimen/live_data_size"
+        app:layout_constraintBottom_toBottomOf="@+id/xPlusBackground"
+        app:layout_constraintEnd_toEndOf="@+id/xPlusBackground"
+        app:layout_constraintStart_toStartOf="@+id/xPlusBackground"
+        app:layout_constraintTop_toTopOf="@+id/xPlusBackground" />
+
+    <TextView
+        android:id="@+id/zMinusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="@dimen/live_data_size"
+        app:layout_constraintBottom_toBottomOf="@+id/zMinusBackground"
+        app:layout_constraintEnd_toEndOf="@+id/zMinusBackground"
+        app:layout_constraintStart_toStartOf="@+id/zMinusBackground"
+        app:layout_constraintTop_toTopOf="@+id/zMinusBackground" />
+</android.support.constraint.ConstraintLayout>
