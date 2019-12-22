@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +21,8 @@ import com.example.drivingstyleassistant.presentation.viewmodels.MainViewModel;
 public class MainFragment extends Fragment {
 
     private MainViewModel mViewModel;
+
+    Button startRoute;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -52,6 +57,20 @@ public class MainFragment extends Fragment {
 
         TextView corneringGradeTextView = (TextView) getActivity().findViewById(R.id.corneringGradeText);
         ImageView corneringGradeBackground = (ImageView) getActivity().findViewById(R.id.corneringGradeBackgroundImageView);
+
+        startRoute = getActivity().findViewById(R.id.startRouteButton);
+
+        startRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new RouteFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.view_content, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
         RouteHelper routeHelper = new RouteHelper();
 

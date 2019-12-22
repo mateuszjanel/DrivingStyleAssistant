@@ -14,10 +14,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.drivingstyleassistant.R;
@@ -64,6 +69,11 @@ public class RouteFragment extends Fragment implements SensorEventListener {
     long lastEventTime;
 
 
+    TextView zPlus, zMinus, xPlus, xMinus, speed;
+    ImageView zPlusBackground, zMinusBackground, xPlusBackground, xMinusBackground;
+    Button finishRouteButton;
+
+
     private OnFragmentInteractionListener mListener;
 
     public RouteFragment() {
@@ -104,6 +114,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
     public void onPause() {
         super.onPause();
         sensorManager.unregisterListener(this);
+        smoothnessFinalGrade.grade();
     }
 
     @Override
@@ -123,6 +134,17 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         isCorneringPositive = true;
         smoothnessFinalGrade = new SmoothnessFinalGrade();
 
+        zPlus = getActivity().findViewById(R.id.zPlusTextView);
+        zMinus = getActivity().findViewById(R.id.zMinusTextView);
+        xPlus = getActivity().findViewById(R.id.xPlusTextView);
+        xMinus = getActivity().findViewById(R.id.xMinusTextView);
+        speed = getActivity().findViewById(R.id.speedTextView);
+        zPlusBackground = getActivity().findViewById(R.id.zPlusBackground);
+        zMinusBackground = getActivity().findViewById(R.id.zMinusBackground);
+        xPlusBackground = getActivity().findViewById(R.id.xPlusBackground);
+        xMinusBackground = getActivity().findViewById(R.id.xMinusBackground);
+        finishRouteButton = getActivity().findViewById(R.id.finishRouteButton);
+
         //accelerometer
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
@@ -133,6 +155,21 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.gps_check_message), Toast.LENGTH_SHORT).show();
         }
+
+        finishRouteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                routeHelper.setSmoothnessGrade(smoothnessFinalGrade.grade(), currentRouteId);
+                Toast.makeText(getActivity(), getActivity().getString(R.string.all_saved),Toast.LENGTH_SHORT).show();
+
+                Fragment fragment = new MainFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.view_content, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -153,6 +190,8 @@ public class RouteFragment extends Fragment implements SensorEventListener {
                 public void onLocationChanged(Location location) {
                     // Called when a new location is found by the network location provider.
                     currentSpeed = location.getSpeed();
+                    int speedKMPH =(int)(currentSpeed/3.6);
+                    speed.setText(String.valueOf(speedKMPH));
                     if(currentSpeed > 0 && drivingStarted == false){
                         smoothnessFragmentaryGrade = new SmoothnessFragmentaryGrade();
                         drivingStarted = true;
@@ -202,6 +241,65 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         }
     }
 
+    private void setAccelerationsTextViews (float accX, float accZ){
+
+        double accXG = Math.abs(accX) / 9.81;
+        double accZG = Math.abs(accZ) / 9.81;
+
+        if (accXG <= 0.4){
+            xPlusBackground.setImageResource(R.color.positiveGrade);
+            xMinusBackground.setImageResource(R.color.positiveGrade);
+        }
+        else if(accXG > 0.4 && accXG <= 0.8){
+            xPlusBackground.setImageResource(R.color.averageGrade);
+            xMinusBackground.setImageResource(R.color.averageGrade);
+        }
+        else if(accXG > 0.8){
+            xPlusBackground.setImageResource(R.color.negativeGrade);
+            xMinusBackground.setImageResource(R.color.negativeGrade);
+        }
+
+
+        if (accZG <= 0.4){
+            zPlusBackground.setImageResource(R.color.positiveGrade);
+            zMinusBackground.setImageResource(R.color.positiveGrade);
+        }
+        else if(accZG > 0.4 && accZG <= 0.8){
+            zPlusBackground.setImageResource(R.color.averageGrade);
+            zMinusBackground.setImageResource(R.color.averageGrade);
+        }
+        else if(accZG > 0.8){
+            zPlusBackground.setImageResource(R.color.negativeGrade);
+            zMinusBackground.setImageResource(R.color.negativeGrade);
+        }
+
+        if(accX > 0){
+            xPlus.setText(String.valueOf(accXG));
+            xMinus.setText("0");
+        }
+        else {
+            xPlus.setText("0");
+            xMinus.setText(String.valueOf(accXG));
+        }
+
+        if(accZ > 0){
+            xPlus.setText(String.valueOf(accZG));
+            xMinus.setText("0");
+        }
+        else {
+            xPlus.setText("0");
+            xMinus.setText(String.valueOf(accZG * -1));
+        }
+
+        if(accX == 0 && accZ == 0){
+            xPlus.setText("0");
+            xMinus.setText("0");
+            zPlus.setText("0");
+            zMinus.setText("0");
+
+        }
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event){
         Sensor sensor = event.sensor;
@@ -210,6 +308,8 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         float accelerometerX = event.values[0];
         float accelerometerY = event.values[1];
         float accelerometerZ = event.values[2];
+
+        setAccelerationsTextViews(accelerometerX, accelerometerZ);
 
         if(eventHelper.checkIfTransgression(accelerometerZ)){
             accTransgression = 1;

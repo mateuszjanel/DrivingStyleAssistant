@@ -1,11 +1,14 @@
 package com.example.drivingstyleassistant.data;
 
+import com.example.drivingstyleassistant.domain.helpers.RouteHelper;
+
 import java.util.ArrayList;
 
 public class SmoothnessFinalGrade implements GradeHelper {
 
     public ArrayList<Float> fragmentaryGrades = new ArrayList<>();
     float sum;
+    RouteHelper routeHelper = new RouteHelper();
 
     @Override
     public void analyze() {
