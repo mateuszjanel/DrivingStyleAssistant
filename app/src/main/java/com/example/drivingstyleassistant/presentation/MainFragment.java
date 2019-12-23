@@ -72,6 +72,13 @@ public class MainFragment extends Fragment {
             }
         });
 
+        meanGradeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         RouteHelper routeHelper = new RouteHelper();
 
         float meanGrade = routeHelper.getMeanGrade(0);
