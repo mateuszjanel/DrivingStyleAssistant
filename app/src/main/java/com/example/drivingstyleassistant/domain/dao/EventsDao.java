@@ -24,4 +24,7 @@ public interface EventsDao {
 
     @Query("SELECT * FROM events WHERE id = :id")
     Events getEventById(int id);
+
+    @Query("SELECT * FROM events WHERE event_type = :eventtype")
+    List<Events> getEventsByType(Events.EventType eventtype);
 }

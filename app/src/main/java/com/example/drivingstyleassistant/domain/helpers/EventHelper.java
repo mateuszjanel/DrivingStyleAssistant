@@ -5,6 +5,7 @@ import com.example.drivingstyleassistant.domain.AppDatabase;
 import com.example.drivingstyleassistant.domain.entities.Events;
 
 import java.sql.Date;
+import java.util.List;
 
 public class EventHelper {
     ContextService contextService = ContextService.getContextService();
@@ -22,5 +23,25 @@ public class EventHelper {
             transgression = true;
         }
         return transgression;
+    }
+
+    public List<Events> getAllEventsOfType(Events.EventType type){
+        return appDatabase.eventsDao().getEventsByType(type);
+    }
+
+    public Events.EventType getEventType(String type){
+        Events.EventType eventType;
+        if(type == "accelerating"){
+            eventType = Events.EventType.AggressiveAcceleration;
+        }
+        else if(type == "braking"){
+            eventType = Events.EventType.SuddenBraking;
+        }
+        else if (type == "cornering"){
+            eventType = Events.EventType.DangerousCornering;
+        }
+        else eventType = null;
+
+        return eventType;
     }
 }
