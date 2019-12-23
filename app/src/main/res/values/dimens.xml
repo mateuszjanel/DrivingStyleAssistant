@@ -5,4 +5,5 @@
     <dimen name="element_name">24</dimen>
     <dimen name="live_data_size">24</dimen>
     <dimen name="background_square">120dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>
