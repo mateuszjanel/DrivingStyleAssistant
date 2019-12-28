@@ -15,14 +15,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.drivingstyleassistant.R;
+import com.example.drivingstyleassistant.domain.entities.EventTypeConverter;
+import com.example.drivingstyleassistant.domain.entities.Events;
 import com.example.drivingstyleassistant.domain.helpers.RouteHelper;
 import com.example.drivingstyleassistant.presentation.viewmodels.MainViewModel;
+
+import java.util.Objects;
 
 public class MainFragment extends Fragment {
 
     private MainViewModel mViewModel;
 
     Button startRoute;
+    Events.EventType chosenEventType;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -72,10 +77,17 @@ public class MainFragment extends Fragment {
             }
         });
 
-        meanGradeTextView.setOnClickListener(new View.OnClickListener() {
+        final Fragment fragment = new EventFragment();
+
+        acceleratingGradeTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                chosenEventType = Events.EventType.AggressiveAcceleration;
+                int eventTypeCode = EventTypeConverter.toInt(chosenEventType);
+                Bundle bundle = new Bundle();
+                bundle.putInt("typeCode", eventTypeCode);
+                fragment.setArguments(bundle);
+                showFragment(fragment);
             }
         });
 
@@ -87,7 +99,7 @@ public class MainFragment extends Fragment {
         float smoothnessGrade = routeHelper.getMeanGrade(3);
         float corneringGrade = routeHelper.getMeanGrade(4);
         changeGrade(meanGradeBackground, meanGrade, meanGradeTextView);
-        changeGrade(corneringGradeBackground, acceleratingGrade, acceleratingGradeTextView);
+        changeGrade(acceleratingGradeBackground, acceleratingGrade, acceleratingGradeTextView);
         changeGrade(brakingGradeBackground, brakingGrade, brakingGradeTextView);
         changeGrade(smoothnessGradeBackground, smoothnessGrade, smoothnessGradeTextView);
         changeGrade(corneringGradeBackground, corneringGrade, corneringGradeTextView);
@@ -103,5 +115,13 @@ public class MainFragment extends Fragment {
         } else if (grade >= 4 && grade <= 5) {
             gradeBackground.setImageResource(R.color.positiveGrade);
         }
+    }
+
+    void showFragment(Fragment fragment){
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.view_content, Objects.requireNonNull(fragment));
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

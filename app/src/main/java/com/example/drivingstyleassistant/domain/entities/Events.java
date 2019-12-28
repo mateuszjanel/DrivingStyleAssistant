@@ -100,6 +100,14 @@ public class Events {
         this.routeId = routeId;
     }
 
+    public float getSpeed() {
+        return speed;
+    }
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
     public Events(Date timestamp, float gForce, int degree, float gradeLoss, EventType eventType, long routeId, float speed) {
         this.timestamp = timestamp;
         this.gForce = gForce;

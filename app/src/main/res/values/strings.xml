@@ -16,4 +16,6 @@
     <string name="start_display_data">---</string>
     <string name="finish_route">Finish route</string>
     <string name="all_saved">All data saved</string>
+    <string name="speed_label">Speed</string>
+    <string name="g_unit">G</string>
 </resources>

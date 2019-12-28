@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         ContextService contextService = ContextService.getContextService();
         contextService.appContext = getApplicationContext();
-        Fragment fragment = new SensorPreviewFragment();
+        Fragment fragment = new MainFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.view_content, fragment);

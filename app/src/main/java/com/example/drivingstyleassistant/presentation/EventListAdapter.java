@@ -1,7 +1,6 @@
 package com.example.drivingstyleassistant.presentation;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +10,9 @@ import android.widget.TextView;
 
 import com.example.drivingstyleassistant.R;
 import com.example.drivingstyleassistant.domain.entities.Events;
-import com.example.drivingstyleassistant.presentation.EventFragment.OnListFragmentInteractionListener;
-import com.example.drivingstyleassistant.presentation.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class EventListAdapter extends ArrayAdapter<Events> {
 
     int itemId;
@@ -48,25 +40,38 @@ public class EventListAdapter extends ArrayAdapter<Events> {
         else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+        Events events = getItem(position);
+        viewHolder.date.setText(events.getTimestamp().toString());
+        viewHolder.speed.setText(String.valueOf(events.getSpeed()));
+        viewHolder.value.setText(String.valueOf(events.getgForce()));
+        viewHolder.type.setText(events.getEventType().toString());
 
+        return viewHolder.rootView;
     }
 
-    public class ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+    public static class ViewHolder {
+        public final LinearLayout rootView;
+        public final TextView date;
+        public final TextView speed;
+        public final TextView value;
+        public final TextView type;
 
-        public ViewHolder(View view) {
-            
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+        public ViewHolder(LinearLayout rootView, TextView date, TextView speed, TextView value, TextView type) {
+            this.rootView = rootView;
+            this.date = date;
+            this.speed = speed;
+            this.value = value;
+            this.type = type;
         }
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+        public static ViewHolder create (LinearLayout rootView){
+            TextView date = rootView.findViewById(R.id.date);
+            TextView speed = rootView.findViewById(R.id.speed);
+            TextView value = rootView.findViewById(R.id.value);
+            TextView type = rootView.findViewById(R.id.type);
+
+            return new ViewHolder(rootView, date, speed, value, type);
         }
+
     }
 }
