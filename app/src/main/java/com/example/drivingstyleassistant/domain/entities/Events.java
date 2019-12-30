@@ -8,7 +8,7 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "events",
-        foreignKeys = @ForeignKey(entity = Events.class,
+        foreignKeys = @ForeignKey(entity = Route.class,
                 parentColumns = "id",
                 childColumns = "route_id",
                 onDelete = ForeignKey.NO_ACTION))

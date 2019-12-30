@@ -85,5 +85,8 @@ public class Route {
 
     public Route(Date routeDate) {
         this.routeDate = routeDate;
+        this.setAcceleratingGrade(5.0f);
+        this.setDangerousCornering(5.0f);
+        this.setSuddenBreakingsNumber(5.0f);
     }
 }

@@ -160,7 +160,12 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         finishRouteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                routeHelper.setSmoothnessGrade(smoothnessFinalGrade.grade(), currentRouteId);
+                if(smoothnessFinalGrade.fragmentaryGrades.size() > 0) {
+                    routeHelper.setSmoothnessGrade(smoothnessFinalGrade.grade(), currentRouteId);
+                }
+                else {
+                    routeHelper.setSmoothnessGrade(5.0f, currentRouteId);
+                }
                 Toast.makeText(getActivity(), getActivity().getString(R.string.all_saved),Toast.LENGTH_SHORT).show();
 
                 Fragment fragment = new MainFragment();
@@ -191,9 +196,9 @@ public class RouteFragment extends Fragment implements SensorEventListener {
                 public void onLocationChanged(Location location) {
                     // Called when a new location is found by the network location provider.
                     currentSpeed = location.getSpeed();
-                    int speedKMPH =(int)(currentSpeed/3.6);
+                    int speedKMPH =(int)(currentSpeed*3.6);
                     speed.setText(String.valueOf(speedKMPH));
-                    if(currentSpeed > 0 && drivingStarted == false){
+                    if(currentSpeed > 2.8 && drivingStarted == false){
                         smoothnessFragmentaryGrade = new SmoothnessFragmentaryGrade();
                         drivingStarted = true;
                         lastShotTakenTime = System.currentTimeMillis();
@@ -244,8 +249,8 @@ public class RouteFragment extends Fragment implements SensorEventListener {
 
     private void setAccelerationsTextViews (float accX, float accZ){
 
-        double accXG = Math.abs(accX) / 9.81;
-        double accZG = Math.abs(accZ) / 9.81;
+        double accXG = Math.round((Math.abs(accX) / 9.81)*100.0)/100.0;
+        double accZG = Math.round((Math.abs(accZ) / 9.81)*100.0)/100.0;
 
         if (accXG <= 0.4){
             xPlusBackground.setImageResource(R.color.positiveGrade);
@@ -284,12 +289,12 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         }
 
         if(accZ > 0){
-            xPlus.setText(String.valueOf(accZG));
-            xMinus.setText("0");
+            zPlus.setText(String.valueOf(accZG));
+            zMinus.setText("0");
         }
         else {
-            xPlus.setText("0");
-            xMinus.setText(String.valueOf(accZG * -1));
+            zPlus.setText("0");
+            zMinus.setText(String.valueOf(accZG * -1));
         }
 
         if(accX == 0 && accZ == 0){
@@ -376,7 +381,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
 
     }
 
-    @Override
+/*    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
@@ -391,7 +396,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this

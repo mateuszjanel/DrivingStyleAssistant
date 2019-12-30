@@ -34,7 +34,7 @@ public class AccelerationsGrade implements GradeHelper{
         }
         else if(accelerationInG < 0){
             previousGrade = routeHelper.getGradeFromRoute("breaking", routeId);
-            eventType = Events.EventType.valueOf("SuddenBreaking");
+            eventType = Events.EventType.valueOf("SuddenBraking");
             typeOfEvent = "breaking";
         }
         eventHelper.addEventAcceleration(routeId, gradeLoss, speed, degree, accelerationInG, eventType, sensorEvent.timestamp);

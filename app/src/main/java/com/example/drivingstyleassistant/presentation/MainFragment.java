@@ -89,6 +89,30 @@ public class MainFragment extends Fragment {
             }
         });
 
+        brakingGradeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chosenEventType = Events.EventType.SuddenBraking;
+                int eventTypeCode = EventTypeConverter.toInt(chosenEventType);
+                Bundle bundle = new Bundle();
+                bundle.putInt("typeCode", eventTypeCode);
+                fragment.setArguments(bundle);
+                showFragment(fragment);
+            }
+        });
+
+        corneringGradeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chosenEventType = Events.EventType.DangerousCornering;
+                int eventTypeCode = EventTypeConverter.toInt(chosenEventType);
+                Bundle bundle = new Bundle();
+                bundle.putInt("typeCode", eventTypeCode);
+                fragment.setArguments(bundle);
+                showFragment(fragment);
+            }
+        });
+
         RouteHelper routeHelper = new RouteHelper();
 
         float meanGrade = routeHelper.getMeanGrade(0);
@@ -105,7 +129,7 @@ public class MainFragment extends Fragment {
 
 
     void changeGrade(ImageView gradeBackground, float grade, TextView gradeText) {
-        gradeText.setText(String.valueOf(grade));
+        gradeText.setText(String.valueOf((Math.round(grade*10.0))/10.0));
         if (grade < 3) {
             gradeBackground.setImageResource(R.color.negativeGrade);
         } else if (grade >= 3 && grade < 4) {

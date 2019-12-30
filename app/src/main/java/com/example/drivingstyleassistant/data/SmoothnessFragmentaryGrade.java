@@ -11,6 +11,11 @@ public class SmoothnessFragmentaryGrade implements GradeHelper {
     public double[] smooths;
     int deviationsCounter;
 
+    public SmoothnessFragmentaryGrade(){
+        speeds = new ArrayList<>();
+        xValsList = new ArrayList<>();
+    }
+
     public float grade(){
         deviationsCounter = 0;
         analyze();

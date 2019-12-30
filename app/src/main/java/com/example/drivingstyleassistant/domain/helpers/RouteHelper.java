@@ -13,7 +13,8 @@ public class RouteHelper {
     AppDatabase appDatabase = AppDatabase.getAppDatabase(contextService.appContext);
 
     public long startRoute() {
-        Date currentTime = (Date) Calendar.getInstance().getTime();
+//        Date currentTime = (Date)Calendar.getInstance().getTime();
+        Date currentTime = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         Route newRoute = new Route(currentTime);
         long newId;
         newId = appDatabase.routeDao().insert(newRoute);
@@ -36,14 +37,17 @@ public class RouteHelper {
                 newGrade = commonHelper.checkGradeLimits(lastGrade - gradeLoss);
 
                 route.setAcceleratingGrade(newGrade);
+                break;
             case "breaking" :
                 lastGrade = route.getBreakingGrade();
                 newGrade = commonHelper.checkGradeLimits(lastGrade - gradeLoss);
                 route.setSuddenBreakingsNumber(newGrade);
+                break;
             case "cornering":
                 lastGrade = route.getDangerousCornering();
                 newGrade = commonHelper.checkGradeLimits(lastGrade - gradeLoss);
                 route.setDangerousCornering(newGrade);
+                break;
         }
         appDatabase.routeDao().updateRoute(routeId, (Date) route.getRouteDate(), route.getMark(), route.getBreakingGrade(), route.getAcceleratingGrade(), route.getSmoothness(), route.getDangerousCornering());
     }
@@ -54,12 +58,16 @@ public class RouteHelper {
         switch (type) {
             case "smoothness":
                 gradeToReturn = route.getSmoothness();
+                break;
             case "acceleration":
                 gradeToReturn = route.getAcceleratingGrade();
+                break;
             case "breaking" :
                 gradeToReturn = route.getBreakingGrade();
+                break;
             case "cornering":
                 gradeToReturn = route.getDangerousCornering();
+                break;
         }
         return gradeToReturn;
     }
@@ -87,14 +95,19 @@ public class RouteHelper {
         switch (option){
             case 0:
                 toReturn = meanGrade;
+                break;
             case 1:
                 toReturn = accelerationGrade;
+                break;
             case 2:
                 toReturn = breakingsGrade;
+                break;
             case 3:
                 toReturn = smoothnessGrade;
+                break;
             case 4:
                 toReturn = corneringGrade;
+                break;
         }
 
         return toReturn;
