@@ -25,6 +25,7 @@ public class EventTypeConverter {
         }
     }
 
+    @TypeConverter
     public static int toInt(Events.EventType type){
         return type.getCode();
     }

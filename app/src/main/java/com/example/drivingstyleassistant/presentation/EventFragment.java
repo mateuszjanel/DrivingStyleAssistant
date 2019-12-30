@@ -2,7 +2,6 @@ package com.example.drivingstyleassistant.presentation;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +11,12 @@ import com.example.drivingstyleassistant.R;
 import com.example.drivingstyleassistant.domain.entities.EventTypeConverter;
 import com.example.drivingstyleassistant.domain.entities.Events;
 import com.example.drivingstyleassistant.domain.helpers.EventHelper;
-import com.example.drivingstyleassistant.presentation.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
+import androidx.fragment.app.Fragment;
+
 public class EventFragment extends Fragment {
 
    ArrayList<Events> eventsArrayList = new ArrayList<>();

@@ -6,7 +6,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
 @Entity(tableName = "events",
         foreignKeys = @ForeignKey(entity = Events.class,
@@ -28,7 +27,6 @@ public class Events {
     @ColumnInfo(name = "speed")
     private float speed;
     @ColumnInfo(name = "event_type")
-    @TypeConverters(EventTypeConverter.class)
     EventType eventType;
     @ColumnInfo(name = "route_id")
     private long routeId;
@@ -60,11 +58,11 @@ public class Events {
         this.id = id;
     }
 
-    public float getgForce() {
+    public float getGForce() {
         return gForce;
     }
 
-    public void setgForce(float gForce) {
+    public void setGForce(float gForce) {
         this.gForce = gForce;
     }
 

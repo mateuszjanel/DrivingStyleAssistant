@@ -1,6 +1,6 @@
 package com.example.drivingstyleassistant.domain.entities;
 
-import java.util.Date;
+import java.sql.Date;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -49,6 +49,10 @@ public class Route {
 
     public float getBreakingGrade() {
         return breakingGrade;
+    }
+
+    public void setBreakingGrade(float breakingGrade) {
+        this.breakingGrade = breakingGrade;
     }
 
     public void setSuddenBreakingsNumber(float breakingGrade) {
