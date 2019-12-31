@@ -129,7 +129,7 @@ public class MainFragment extends Fragment {
 
 
     void changeGrade(ImageView gradeBackground, float grade, TextView gradeText) {
-        gradeText.setText(String.valueOf((Math.round(grade*10.0))/10.0));
+        gradeText.setText(String.valueOf((Math.round(grade*100.0))/100.0));
         if (grade < 3) {
             gradeBackground.setImageResource(R.color.negativeGrade);
         } else if (grade >= 3 && grade < 4) {

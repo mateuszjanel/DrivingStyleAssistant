@@ -81,14 +81,14 @@ public class RouteHelper {
             breakingsGrade = breakingsGrade + route.getBreakingGrade();
             smoothnessGrade = smoothnessGrade + route.getSmoothness();
             corneringGrade = corneringGrade + route.getDangerousCornering();
-            meanGrade = meanGrade + ((accelerationGrade + breakingsGrade + smoothnessGrade + corneringGrade) / 4);
+            //meanGrade = meanGrade + ((accelerationGrade + breakingsGrade + smoothnessGrade + corneringGrade) / 4);
         }
         int sizeOfRoutesList = routes.size();
         accelerationGrade = accelerationGrade / sizeOfRoutesList;
         breakingsGrade = breakingsGrade / sizeOfRoutesList;
         smoothnessGrade = smoothnessGrade / sizeOfRoutesList;
         corneringGrade = corneringGrade / sizeOfRoutesList;
-        meanGrade = meanGrade / sizeOfRoutesList;
+        meanGrade = (accelerationGrade + breakingsGrade + smoothnessGrade + corneringGrade) / 4;
 
         float toReturn = -1;
 

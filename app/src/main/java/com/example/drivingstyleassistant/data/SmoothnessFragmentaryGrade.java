@@ -18,9 +18,11 @@ public class SmoothnessFragmentaryGrade implements GradeHelper {
 
     public float grade(){
         deviationsCounter = 0;
-        analyze();
-        float grade = 5 * (deviationsCounter/smooths.length);
-
+        float grade = 5.0f;
+        if(speeds.size() > 0) {
+            analyze();
+            grade = 5 * (deviationsCounter / smooths.length);
+        }
         return grade;
     }
 
