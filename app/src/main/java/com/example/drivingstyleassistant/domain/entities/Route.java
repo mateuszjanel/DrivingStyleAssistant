@@ -1,6 +1,6 @@
 package com.example.drivingstyleassistant.domain.entities;
 
-import java.util.Date;
+import java.sql.Date;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -27,7 +27,7 @@ public class Route {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -49,6 +49,10 @@ public class Route {
 
     public float getBreakingGrade() {
         return breakingGrade;
+    }
+
+    public void setBreakingGrade(float breakingGrade) {
+        this.breakingGrade = breakingGrade;
     }
 
     public void setSuddenBreakingsNumber(float breakingGrade) {
@@ -81,5 +85,8 @@ public class Route {
 
     public Route(Date routeDate) {
         this.routeDate = routeDate;
+        this.setAcceleratingGrade(5.0f);
+        this.setDangerousCornering(5.0f);
+        this.setSuddenBreakingsNumber(5.0f);
     }
 }

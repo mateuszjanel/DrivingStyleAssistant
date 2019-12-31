@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DrivingStyleAssistant</string>
+    <string name="title_activity_main">DrivingStyleAssistant</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="gps_check_message">Lokalizacja jest niedostępna. Włącz usługę lokalizacji.</string>
+    <string name="accelerating">Przyspieszanie</string>
+    <string name="braking">Hamowanie</string>
+    <string name="smoothness">Płynność jazdy</string>
+    <string name="cornering">Pokonywanie zakrętów</string>
+    <string name="meanGrade">Średnia ocena</string>
+    <string name="startRoute">Rozpocznij trasę</string>
+    <string name="speed_unit_kmph">km/h</string>
+    <string name="finish_route">Zakończ trasę</string>
+    <string name="all_saved">Dane trasy zostały zapisane</string>
+    <string name="speed_label">Prędkość</string>
+</resources>

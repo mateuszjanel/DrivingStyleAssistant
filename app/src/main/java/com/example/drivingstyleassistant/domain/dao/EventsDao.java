@@ -17,11 +17,14 @@ public interface EventsDao {
     long insert(Events event);
 
     @Query("UPDATE EVENTS SET g_force = :gforce, degree = :degree, grade_loss = :gradeloss, event_type = :eventtype WHERE id = :ID")
-    void updateEvent(int ID, float gforce, int degree, float gradeloss, Events.EventType eventtype);
+    void updateEvent(long ID, float gforce, int degree, float gradeloss, Events.EventType eventtype);
 
     @Query("SELECT * FROM events")
     List<Events> getEvents();
 
     @Query("SELECT * FROM events WHERE id = :id")
-    Events getEventById(int id);
+    Events getEventById(long id);
+
+    @Query("SELECT * FROM events WHERE event_type = :eventtype")
+    List<Events> getEventsByType(Events.EventType eventtype);
 }

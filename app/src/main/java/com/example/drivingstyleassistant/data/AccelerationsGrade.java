@@ -23,23 +23,30 @@ public class AccelerationsGrade implements GradeHelper{
     public float grade(SensorEvent sensorEvent, long routeId, float speed){
         accelerationInG = analyzeData(sensorEvent, routeId);
         float previousGrade;
+        String typeOfEvent = "";
         RouteHelper routeHelper = new RouteHelper();
         EventHelper eventHelper = new EventHelper();
         analyze();
         if(accelerationInG > 0){
             previousGrade = routeHelper.getGradeFromRoute("acceleration", routeId);
             eventType = Events.EventType.valueOf("AggressiveAcceleration");
-            eventHelper.addEventAcceleration(routeId, gradeLoss, speed, degree, accelerationInG, eventType, sensorEvent.timestamp);
-
+            typeOfEvent = "acceleration";
         }
         else if(accelerationInG < 0){
             previousGrade = routeHelper.getGradeFromRoute("breaking", routeId);
-            eventType = Events.EventType.valueOf("SuddenBreaking");
-            eventHelper.addEventAcceleration(routeId, gradeLoss, speed, degree, accelerationInG, eventType, sensorEvent.timestamp);
+            eventType = Events.EventType.valueOf("SuddenBraking");
+            typeOfEvent = "breaking";
         }
-        return 0;
+        eventHelper.addEventAcceleration(routeId, gradeLoss, speed, degree, accelerationInG, eventType, sensorEvent.timestamp);
+        routeHelper.updateGrade(gradeLoss, routeId, typeOfEvent);
+        return gradeLoss;
     }
 
+    public void gradeOnly(float gradeAdd, long routeId){
+        RouteHelper routeHelper = new RouteHelper();
+        routeHelper.updateGrade(gradeAdd * (-1), routeId, "acceleration");
+        routeHelper.updateGrade(gradeAdd *(-1), routeId, "breaking");
+    }
 
     @Override
     public void analyze() {
