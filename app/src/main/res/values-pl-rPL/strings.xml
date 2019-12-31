@@ -14,4 +14,5 @@
     <string name="finish_route">Zakończ trasę</string>
     <string name="all_saved">Dane trasy zostały zapisane</string>
     <string name="speed_label">Prędkość</string>
+    <string name="g_force_label">G Force</string>
 </resources>

@@ -18,4 +18,5 @@
     <string name="all_saved">All data saved</string>
     <string name="speed_label">Speed</string>
     <string name="g_unit">G</string>
+    <string name="g_force_label">G Force</string>
 </resources>
