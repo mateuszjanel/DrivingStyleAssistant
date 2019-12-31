@@ -20,8 +20,8 @@ public class AccelerationsGrade implements GradeHelper{
         return accelerationInG;
     }
 
-    public float grade(SensorEvent sensorEvent, long routeId, float speed){
-        accelerationInG = analyzeData(sensorEvent, routeId);
+    public float grade(SensorEvent sensorEvent, long routeId, float speed, float accelerationInG){
+//        accelerationInG = analyzeData(sensorEvent, routeId);
         float previousGrade;
         String typeOfEvent = "";
         RouteHelper routeHelper = new RouteHelper();

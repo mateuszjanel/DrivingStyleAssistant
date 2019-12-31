@@ -7,6 +7,7 @@ import com.example.drivingstyleassistant.domain.AppDatabase;
 import com.example.drivingstyleassistant.domain.entities.Events;
 
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -16,7 +17,7 @@ public class EventHelper {
     AppDatabase appDatabase = AppDatabase.getAppDatabase(contextService.appContext);
 
     public void addEventAcceleration(long routeId, float gradeLoss, float speed, int degree, float gForce, Events.EventType eventType, long timestamp){
-        Date dateStamp = new Date(timestamp * 1000);
+        Date dateStamp = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         Events events = new Events(dateStamp, gForce, degree, gradeLoss, eventType, routeId, speed);
         long id = appDatabase.eventsDao().insert(events);
         Log.d(TAG, "addEventAcceleration: " + String.valueOf(id));

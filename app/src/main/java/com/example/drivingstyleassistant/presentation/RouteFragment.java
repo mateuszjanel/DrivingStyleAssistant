@@ -49,6 +49,9 @@ public class RouteFragment extends Fragment implements SensorEventListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    LocationManager locationManager;
+    LocationListener locationListener;
+
     long currentRouteId;
 
     SensorManager sensorManager;
@@ -116,12 +119,28 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         super.onPause();
         sensorManager.unregisterListener(this);
         smoothnessFinalGrade.grade();
+        locationManager.removeUpdates(locationListener);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         sensorManager.registerListener(this, accelerationSensor,SensorManager.SENSOR_DELAY_GAME);
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+            } else {
+                //Request the permission
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        1);
+
+            }
+        }
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
 
     @Override
@@ -150,7 +169,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 
-        final LocationManager locationManager = (LocationManager) getActivity().getSystemService(getActivity().getApplicationContext().LOCATION_SERVICE);
+        locationManager = (LocationManager) getActivity().getSystemService(getActivity().getApplicationContext().LOCATION_SERVICE);
         final String locationProvider = LocationManager.GPS_PROVIDER;
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
@@ -192,7 +211,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         }
         else {
 
-            final LocationListener locationListener = new LocationListener() {
+            locationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
                     // Called when a new location is found by the network location provider.
                     currentSpeed = location.getSpeed();
@@ -334,7 +353,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
                 maxAccelerationInEvent = maxAccelerationInEvent * (-1);
             }
             AccelerationsGrade accelerationsGrade = new AccelerationsGrade();
-            accelerationsGrade.grade(maxAccelerationSensorEvent, currentRouteId, maxAccelerationSpeed);
+            accelerationsGrade.grade(maxAccelerationSensorEvent, currentRouteId, maxAccelerationSpeed, (float)maxAccelerationInEvent);
             accTransgression = 0;
             maxAccelerationInEvent = 0;
             isAccelerationPositive = true;
@@ -359,7 +378,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
                 maxCorneringAccInEvent = maxAccelerationInEvent * (-1);
             }
             CorneringGrade corneringGrade = new CorneringGrade();
-            corneringGrade.grade(maxCorneringSensorEvent, currentRouteId, maxCorneringSpeed);
+            corneringGrade.grade(maxCorneringSensorEvent, currentRouteId, maxCorneringSpeed, (float) maxAccelerationInEvent);
             corneringTransgression = 0;
             maxCorneringAccInEvent = 0;
             isCorneringPositive = true;

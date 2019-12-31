@@ -42,8 +42,8 @@ public class EventListAdapter extends ArrayAdapter<Events> {
         }
         Events events = getItem(position);
         viewHolder.date.setText(events.getTimestamp().toString());
-        viewHolder.speed.setText(String.valueOf(events.getSpeed()));
-        viewHolder.value.setText(String.valueOf(events.getGForce()));
+        viewHolder.speed.setText(String.valueOf(events.getSpeed()) + R.string.speed_unit_kmph);
+        viewHolder.value.setText(String.valueOf(events.getGForce()) + R.string.g_unit);
         viewHolder.type.setText(events.getEventType().toString());
 
         return viewHolder.rootView;
