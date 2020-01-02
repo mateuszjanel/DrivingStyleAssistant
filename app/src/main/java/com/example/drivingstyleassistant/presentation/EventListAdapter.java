@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.example.drivingstyleassistant.R;
 import com.example.drivingstyleassistant.domain.entities.Events;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class EventListAdapter extends ArrayAdapter<Events> {
@@ -41,9 +43,11 @@ public class EventListAdapter extends ArrayAdapter<Events> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         Events events = getItem(position);
-        viewHolder.date.setText(events.getTimestamp().toString());
-        viewHolder.speed.setText(String.valueOf(events.getSpeed()) + R.string.speed_unit_kmph);
-        viewHolder.value.setText(String.valueOf(events.getGForce()) + R.string.g_unit);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm");
+        Date date = events.getTimestamp();
+        viewHolder.date.setText(simpleDateFormat.format(date));
+        viewHolder.speed.setText(String.valueOf(events.getSpeed()) + context.getString(R.string.speed_unit_kmph));
+        viewHolder.value.setText(String.valueOf(events.getGForce()) + context.getString(R.string.g_unit));
         viewHolder.type.setText(events.getEventType().toString());
 
         return viewHolder.rootView;

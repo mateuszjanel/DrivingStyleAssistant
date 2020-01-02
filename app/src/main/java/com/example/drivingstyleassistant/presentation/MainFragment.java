@@ -1,5 +1,7 @@
 package com.example.drivingstyleassistant.presentation;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,8 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -62,6 +66,20 @@ public class MainFragment extends Fragment {
         ImageView corneringGradeBackground = (ImageView) getActivity().findViewById(R.id.corneringGradeBackgroundImageView);
 
         startRoute = getActivity().findViewById(R.id.startRouteButton);
+
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+            } else {
+                //Request the permission
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        1);
+
+            }
+        }
 
         startRoute.setOnClickListener(new View.OnClickListener() {
             @Override

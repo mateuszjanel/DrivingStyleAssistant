@@ -24,11 +24,13 @@ public class CorneringGrade implements GradeHelper {
     public float grade(SensorEvent sensorEvent, long routeId, float speed, float accelerationInG){
 //        accelerationInG = analyzeData(sensorEvent, routeId);
         float previousGrade;
+        this.accelerationInG = accelerationInG;
         RouteHelper routeHelper = new RouteHelper();
         EventHelper eventHelper = new EventHelper();
         analyze();
         previousGrade = routeHelper.getGradeFromRoute("cornering", routeId);
         eventType = Events.EventType.valueOf("DangerousCornering");
+        speed = (float) (Math.round(speed * 10.0)/10.0);
         eventHelper.addEventAcceleration(routeId, gradeLoss, speed, degree, accelerationInG, eventType, sensorEvent.timestamp);
 
         routeHelper.updateGrade(gradeLoss, routeId, "cornering");

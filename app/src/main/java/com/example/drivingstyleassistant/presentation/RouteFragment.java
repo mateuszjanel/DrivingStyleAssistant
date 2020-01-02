@@ -346,6 +346,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
                 maxAccelerationInEvent = accelerationInG;
                 maxAccelerationSensorEvent = event;
                 maxAccelerationSpeed = currentSpeed;
+                maxAccelerationSpeed = (float) (Math.round(maxAccelerationSpeed*10.0)/10.0);
             }
         }
         else if(!eventHelper.checkIfTransgression(accelerometerZ) && accTransgression == 1){
@@ -370,6 +371,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
                 maxCorneringAccInEvent = accelerationInG;
                 maxCorneringSensorEvent = event;
                 maxCorneringSpeed = currentSpeed;
+                maxCorneringSpeed = (float) (Math.round(maxCorneringSpeed*10.0)/10.0);
             }
         }
 
