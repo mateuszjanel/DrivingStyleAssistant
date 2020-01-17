@@ -18,7 +18,7 @@ public interface RouteDao {
     @Insert
     long insert(Route route);
 
-    @Query("UPDATE routes SET route_date = :routeDate, mark = :mark, sudden_breakings = :breakingGrade, sudden_accelerations = :acceleratingGrade, smoothness = :smoothness, dangerous_cornering = :dangerousCornering WHERE id = :id")
+    @Query("UPDATE routes SET route_date = :routeDate, mark = :mark, braking_grade = :breakingGrade, accelerating_grade = :acceleratingGrade, smoothness = :smoothness, cornering_grade = :dangerousCornering WHERE id = :id")
     void updateRoute(long id, Date routeDate, float mark, float breakingGrade, float acceleratingGrade, float smoothness, float dangerousCornering);
 
     @Query("UPDATE routes SET smoothness = :smoothness WHERE id = :id")

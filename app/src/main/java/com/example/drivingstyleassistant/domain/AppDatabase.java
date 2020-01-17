@@ -19,7 +19,7 @@ import androidx.room.TypeConverters;
 
 
 public abstract class AppDatabase extends RoomDatabase {
-    public static final String DATABASE_NAME = "DrivingStyleAssistantTestDB";
+    public static final String DATABASE_NAME = "DrivingStyleAssistantDB";
     private static AppDatabase INSTANCE;
 
     public abstract RouteDao routeDao();

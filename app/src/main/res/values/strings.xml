@@ -10,7 +10,7 @@
     <string name="braking">Braking</string>
     <string name="smoothness">Driving smoothness</string>
     <string name="cornering">Cornering</string>
-    <string name="meanGrade">Mean grade</string>
+    <string name="meanGrade">Average grade</string>
     <string name="startRoute">Start route</string>
     <string name="speed_unit_kmph">km/h</string>
     <string name="start_display_data">---</string>

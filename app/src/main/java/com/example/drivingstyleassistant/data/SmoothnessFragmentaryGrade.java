@@ -9,7 +9,7 @@ public class SmoothnessFragmentaryGrade implements GradeHelper {
     public ArrayList<Double> speeds;
     public ArrayList<Double> xValsList;
     public double[] smooths;
-    int deviationsCounter;
+    int matchingCounter;
 
     public SmoothnessFragmentaryGrade(){
         speeds = new ArrayList<>();
@@ -17,11 +17,11 @@ public class SmoothnessFragmentaryGrade implements GradeHelper {
     }
 
     public float grade(){
-        deviationsCounter = 0;
+        matchingCounter = 0;
         float grade = 5.0f;
         if(speeds.size() > 0) {
             analyze();
-            grade = 5 * (deviationsCounter / smooths.length);
+            grade = 5 * (matchingCounter / smooths.length);
         }
         return grade;
     }
@@ -30,8 +30,8 @@ public class SmoothnessFragmentaryGrade implements GradeHelper {
         LoessInterpolator loessInterpolator = new LoessInterpolator();
         smooths = loessInterpolator.smooth(arrayListToDoubleArray(xValsList), arrayListToDoubleArray(speeds));
         for(int i = 0; i < smooths.length; i++){
-            if(Math.abs(speeds.get(i) - smooths[i]) > 10){
-                deviationsCounter++;
+            if(Math.abs(speeds.get(i) - smooths[i]) <= 1.9){ //~7km/h
+                matchingCounter++;
             }
         }
     }

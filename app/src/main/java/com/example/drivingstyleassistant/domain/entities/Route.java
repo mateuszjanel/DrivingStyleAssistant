@@ -14,13 +14,13 @@ public class Route {
     private Date routeDate;
     @ColumnInfo(name = "mark")
     private float mark;
-    @ColumnInfo(name = "sudden_breakings")
+    @ColumnInfo(name = "braking_grade")
     private float breakingGrade;
-    @ColumnInfo(name = "sudden_accelerations")
+    @ColumnInfo(name = "accelerating_grade")
     private float acceleratingGrade;
     @ColumnInfo(name = "smoothness")
     private float smoothness;
-    @ColumnInfo(name = "dangerous_cornering")
+    @ColumnInfo(name = "cornering_grade")
     private float dangerousCornering;
 
     public long getId() {

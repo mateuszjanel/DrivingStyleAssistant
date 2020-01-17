@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,19 +36,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link RouteFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link RouteFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RouteFragment extends Fragment implements SensorEventListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     LocationManager locationManager;
     LocationListener locationListener;
@@ -66,7 +55,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
     float maxAccelerationSpeed, maxCorneringSpeed;
     boolean isAccelerationPositive, isCorneringPositive;
 
-    boolean drivingStarted;
+    boolean drivingStarted, smoothnessGradeSaved;
     SmoothnessFragmentaryGrade smoothnessFragmentaryGrade;
     SmoothnessFinalGrade smoothnessFinalGrade;
     long lastShotTakenTime;
@@ -84,20 +73,9 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RouteFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static RouteFragment newInstance(String param1, String param2) {
         RouteFragment fragment = new RouteFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -105,6 +83,8 @@ public class RouteFragment extends Fragment implements SensorEventListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        lastEventTime = System.currentTimeMillis();
     }
 
     @Override
@@ -116,10 +96,18 @@ public class RouteFragment extends Fragment implements SensorEventListener {
 
     @Override
     public void onPause() {
-        super.onPause();
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         sensorManager.unregisterListener(this);
-        smoothnessFinalGrade.grade();
+        if(smoothnessGradeSaved == false) {
+            if (smoothnessFinalGrade.fragmentaryGrades.size() > 0) {
+                float finalGrade = smoothnessFinalGrade.grade();
+                routeHelper.setSmoothnessGrade(finalGrade, currentRouteId);
+            } else {
+                routeHelper.setSmoothnessGrade(5.0f, currentRouteId);
+            }
+        }
         locationManager.removeUpdates(locationListener);
+        super.onPause();
     }
 
     @Override
@@ -148,6 +136,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         routeHelper = new RouteHelper();
         currentRouteId = routeHelper.startRoute();
         drivingStarted = false;
+        smoothnessGradeSaved = false;
         accTransgression = 0;
         corneringTransgression = 0;
         isAccelerationPositive = true;
@@ -179,12 +168,15 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         finishRouteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(smoothnessFinalGrade.fragmentaryGrades.size() > 0) {
-                    routeHelper.setSmoothnessGrade(smoothnessFinalGrade.grade(), currentRouteId);
+                if(smoothnessGradeSaved == false) {
+                    if (smoothnessFinalGrade.fragmentaryGrades.size() > 0) {
+                        float finalGrade = smoothnessFinalGrade.grade();
+                        routeHelper.setSmoothnessGrade(finalGrade, currentRouteId);
+                    } else {
+                        routeHelper.setSmoothnessGrade(5.0f, currentRouteId);
+                    }
                 }
-                else {
-                    routeHelper.setSmoothnessGrade(5.0f, currentRouteId);
-                }
+                smoothnessGradeSaved = true;
                 Toast.makeText(getActivity(), getActivity().getString(R.string.all_saved),Toast.LENGTH_SHORT).show();
 
                 Fragment fragment = new MainFragment();
@@ -213,13 +205,13 @@ public class RouteFragment extends Fragment implements SensorEventListener {
 
             locationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
-                    // Called when a new location is found by the network location provider.
                     currentSpeed = location.getSpeed();
                     int speedKMPH =(int)(currentSpeed*3.6);
                     speed.setText(String.valueOf(speedKMPH));
                     if(currentSpeed > 2.8 && drivingStarted == false){
                         smoothnessFragmentaryGrade = new SmoothnessFragmentaryGrade();
                         drivingStarted = true;
+                        smoothnessGradeSaved = false;
                         lastShotTakenTime = System.currentTimeMillis();
                     }
                     else if(currentSpeed > 0 && drivingStarted == true){
@@ -327,7 +319,6 @@ public class RouteFragment extends Fragment implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event){
-        Sensor sensor = event.sensor;
         EventHelper eventHelper = new EventHelper();
 
         float accelerometerX = event.values[0];

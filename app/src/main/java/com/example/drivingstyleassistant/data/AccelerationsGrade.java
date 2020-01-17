@@ -21,7 +21,6 @@ public class AccelerationsGrade implements GradeHelper{
     }
 
     public float grade(SensorEvent sensorEvent, long routeId, float speed, float accelerationInG){
-//        accelerationInG = analyzeData(sensorEvent, routeId);
         float previousGrade;
         this.accelerationInG = accelerationInG;
         String typeOfEvent = "";
@@ -72,6 +71,6 @@ public class AccelerationsGrade implements GradeHelper{
     }
     @Override
     public float grade(){
-        return 0;
+        throw new IllegalArgumentException("4 parameters are required");
     }
 }

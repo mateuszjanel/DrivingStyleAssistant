@@ -22,7 +22,6 @@ public class CorneringGrade implements GradeHelper {
     }
 
     public float grade(SensorEvent sensorEvent, long routeId, float speed, float accelerationInG){
-//        accelerationInG = analyzeData(sensorEvent, routeId);
         float previousGrade;
         this.accelerationInG = accelerationInG;
         RouteHelper routeHelper = new RouteHelper();
