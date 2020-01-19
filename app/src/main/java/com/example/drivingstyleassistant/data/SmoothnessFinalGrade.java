@@ -6,9 +6,13 @@ import java.util.ArrayList;
 
 public class SmoothnessFinalGrade implements GradeHelper {
 
-    public ArrayList<Float> fragmentaryGrades = new ArrayList<>();
+    public ArrayList<Float> fragmentaryGrades;
     float sum;
     RouteHelper routeHelper = new RouteHelper();
+
+    public SmoothnessFinalGrade(){
+        fragmentaryGrades = new ArrayList<>();
+    }
 
     @Override
     public void analyze() {
