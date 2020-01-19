@@ -60,6 +60,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
     SmoothnessFinalGrade smoothnessFinalGrade;
     long lastShotTakenTime;
     long lastEventTime;
+    long startEventTimeAcc, startEventTimeCornering;
 
 
     TextView zPlus, zMinus, xPlus, xMinus, speed;
@@ -127,7 +128,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
 
             }
         }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
 
@@ -243,7 +244,21 @@ public class RouteFragment extends Fragment implements SensorEventListener {
                         locationManager.removeUpdates(this);
                     }
                     else {
-                        locationManager.requestLocationUpdates(locationProvider, 0, 0, this);
+                        if (ContextCompat.checkSelfPermission(getActivity(),
+                                Manifest.permission.ACCESS_FINE_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            } else {
+                                //Request the permission
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        1);
+
+                            }
+                        }
+                        else {
+                        locationManager.requestLocationUpdates(locationProvider, 0, 0, this);}
                     } //removing updates when gps signal is poor in order to prevent from false speed*/
                 }
 
@@ -253,7 +268,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
                 public void onProviderDisabled(String provider) {
                 }
             };
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
             locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
         }
     }
@@ -328,6 +343,9 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         setAccelerationsTextViews(accelerometerX, accelerometerZ);
 
         if(eventHelper.checkIfTransgression(accelerometerZ)){
+            if(accTransgression == 0){
+                startEventTimeAcc = System.currentTimeMillis();
+            }
             accTransgression = 1;
             double accelerationInG = Math.abs(accelerometerZ / 9.81);
             if(accelerometerZ < 0) {
@@ -344,8 +362,11 @@ public class RouteFragment extends Fragment implements SensorEventListener {
             if(isAccelerationPositive == false){
                 maxAccelerationInEvent = maxAccelerationInEvent * (-1);
             }
-            AccelerationsGrade accelerationsGrade = new AccelerationsGrade();
-            accelerationsGrade.grade(maxAccelerationSensorEvent, currentRouteId, maxAccelerationSpeed, (float)maxAccelerationInEvent);
+            double eventLenght = (System.currentTimeMillis() - startEventTimeAcc) / 1000.0;
+            if(eventLenght > 1) {
+                AccelerationsGrade accelerationsGrade = new AccelerationsGrade();
+                accelerationsGrade.grade(maxAccelerationSensorEvent, currentRouteId, maxAccelerationSpeed, (float) maxAccelerationInEvent);
+            }
             accTransgression = 0;
             maxAccelerationInEvent = 0;
             isAccelerationPositive = true;
@@ -353,6 +374,9 @@ public class RouteFragment extends Fragment implements SensorEventListener {
         }
 
         if(eventHelper.checkIfTransgression(accelerometerX)){
+            if(corneringTransgression == 0){
+                startEventTimeCornering = System.currentTimeMillis();
+            }
             corneringTransgression = 1;
             double accelerationInG = Math.abs(accelerometerX / 9.81);
             if(accelerometerX < 0){
@@ -370,8 +394,11 @@ public class RouteFragment extends Fragment implements SensorEventListener {
             if(isCorneringPositive == false){
                 maxCorneringAccInEvent = maxAccelerationInEvent * (-1);
             }
-            CorneringGrade corneringGrade = new CorneringGrade();
-            corneringGrade.grade(maxCorneringSensorEvent, currentRouteId, maxCorneringSpeed, (float) maxAccelerationInEvent);
+            double eventLenght = (System.currentTimeMillis() - startEventTimeCornering) / 1000.0;
+            if(eventLenght > 1) {
+                CorneringGrade corneringGrade = new CorneringGrade();
+                corneringGrade.grade(maxCorneringSensorEvent, currentRouteId, maxCorneringSpeed, (float) maxAccelerationInEvent);
+            }
             corneringTransgression = 0;
             maxCorneringAccInEvent = 0;
             isCorneringPositive = true;
@@ -380,7 +407,7 @@ public class RouteFragment extends Fragment implements SensorEventListener {
 
         double elapsedTime = (System.currentTimeMillis() - lastEventTime) / 1000.0;
 
-        if(drivingStarted == true && !eventHelper.checkIfTransgression(accelerometerZ) && !eventHelper.checkIfTransgression(accelerometerX) && elapsedTime > 60) {
+        if(drivingStarted == true && !eventHelper.checkIfTransgression(accelerometerZ) && !eventHelper.checkIfTransgression(accelerometerX) && elapsedTime > 180) {
             CorneringGrade corneringGrade = new CorneringGrade();
             AccelerationsGrade accelerationsGrade = new AccelerationsGrade();
             corneringGrade.gradeOnly(0.2f, currentRouteId);
